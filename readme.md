@@ -3,7 +3,7 @@
 
 ## Technology
 * Ruby
-* Nokogiri
+* Watir
 
 ## Development
 Jakob.
