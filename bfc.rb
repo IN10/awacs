@@ -1,45 +1,75 @@
 require 'rubygems'
-require 'nokogiri'
-require 'open-uri'
+require 'watir'
+require 'tty-table'
+require 'tty-spinner'
+require 'pastel'
 
-def get page
-    Nokogiri::HTML(open(page))
-end
+# initialize globals for state
+$processed_links = []
+$pages = []
 
-def has_error? page
-
-end
-
-def get_links page
-end
-
-initial_url = ARGV[0]
-
-initial_url
+# show usage instructions when no start url is given
+$initial_url = ARGV[0]
+unless $initial_url
     puts "Usage: ruby bfc.rb http://website.com"
     exit 1
 end
 
-processed_links = []
-pages = {}
-
-# Add the start point as processed
-processed_links << initial_url
-page = get initial_url
-pages[initial_url] = has_error? page
-
-get_links(page).each do |page|
-
+def has_error? browser
+    ['error', 'warning', 'php', 'exception'].each do |oracle|
+        return true if browser.html.include? 'error'
+    end
+    false
 end
 
+def internal_links browser
+    browser.links.select { |link| link.href.start_with? $initial_url } 
+end
 
+# Process an url for errors and all its linked pages too
+def process url
+    $spinner.update operation: "Processing #{url}"
 
+    # Guard: do not process the entire internet
+    return unless url.start_with? $initial_url
 
+    # Guard: do not process the same link twice
+    return if $processed_links.include? url
+    $processed_links << url
 
-# start with initial url
-# open in nokogiri
-# search for error
-# log result
-# add url to output
-# for each link in page
-    # repeat
+    $browser.goto url
+    $pages << [url, has_error?($browser)]
+
+    # Proceed with all links
+    internal_links($browser).each do |link|
+        process link.href
+    end
+end
+
+# start the spinner
+$spinner = TTY::Spinner.new "[:spinner] :operation"
+$spinner.update operation: 'Starting browser'
+$spinner.auto_spin
+
+# execute
+$browser = Watir::Browser.new :chrome
+$browser.driver.manage.timeouts.implicit_wait = 1
+process $initial_url
+$browser.close
+
+# report
+$spinner.update(operation: 'All done')
+$spinner.success
+
+$pages = $pages.map do |page|
+    result = page[1] ? 'yes' : 'no'
+    if page[1]
+        result = Pastel.new.white.on_red 'yes'
+    else
+        result = Pastel.new.green 'no'
+    end
+    [page[0], result]
+end
+table = TTY::Table.new ['URL', 'Contains errors'],  $pages
+puts "\nResults"
+puts table.render :ascii
