@@ -9,12 +9,16 @@ require 'addressable/uri'
 $processed_links = []
 $pages = []
 
-# show usage instructions when no start url is given
+# Parse command line arguments
 $initial_url = ARGV[0]
+errorsOnly = ARGV.include? '--errors-only'
+
+# Show usage instructions when no start url is given
 unless $initial_url
     puts "Usage: ruby bfc.rb http://website.com"
     exit 1
 end
+
 
 def has_error? browser
     ['error', 'warning', 'php', 'Exception'].each do |oracle|
@@ -66,6 +70,9 @@ $browser = Watir::Browser.new :chrome
 $browser.driver.manage.timeouts.implicit_wait = 1
 process $initial_url
 $browser.close
+
+# Remove succesful results when not required
+$pages.select! { |page| page[1] } if errorsOnly
 
 # report
 $spinner.update(operation: 'All done')
