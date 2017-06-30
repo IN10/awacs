@@ -3,6 +3,7 @@ require 'watir'
 require 'tty-table'
 require 'tty-spinner'
 require 'pastel'
+require 'addressable/uri'
 
 # initialize globals for state
 $processed_links = []
@@ -16,18 +17,27 @@ unless $initial_url
 end
 
 def has_error? browser
-    ['error', 'warning', 'php', 'exception'].each do |oracle|
-        return true if browser.html.include? 'error'
+    ['error', 'warning', 'php', 'Exception'].each do |oracle|
+        return true if browser.html.include? oracle
     end
     false
 end
 
-def internal_links browser
-    browser.links.select { |link| link.href.start_with? $initial_url } 
+def internal_urls browser
+    tags = browser.links.select { |link| link.href.start_with? $initial_url } 
+    urls = tags.map { |tag| normalize(tag.href) }
+    urls.uniq
+end
+
+def normalize url
+    url = Addressable::URI.parse(url).normalize
+    url.fragment = nil
+    url.to_s
 end
 
 # Process an url for errors and all its linked pages too
 def process url
+    url = normalize url
     $spinner.update operation: "Processing #{url}"
 
     # Guard: do not process the entire internet
@@ -41,8 +51,8 @@ def process url
     $pages << [url, has_error?($browser)]
 
     # Proceed with all links
-    internal_links($browser).each do |link|
-        process link.href
+    internal_urls($browser).each do |url|
+        process url
     end
 end
 
