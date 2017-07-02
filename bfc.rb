@@ -28,14 +28,13 @@ end
 
 # Create a temporary directory for us to use
 Dir.mktmpdir do |directory|
-    puts directory
     # Download the website with wget
-    `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait --no-directories -erobots=off #{scope})`
+    `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})`
 
-    files = Dir.entries(directory).select {|f| !File.directory? f}
-    pages = files.map do |filename|
-        contents = File.open("#{directory}/#{filename}", "r").read
-        [filename, contains_error?(contents)]
+    files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
+    pages = files.map do |path|
+        contents = File.open(path, "r").read
+        [path, contains_error?(contents)]
     end
 end
 
