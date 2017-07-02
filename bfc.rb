@@ -31,7 +31,8 @@ Dir.mktmpdir do |directory|
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
         contents = File.open(path, "r").read
-        [path, checks.map { |checker| checker.check(contents) }.flatten(1)]
+        url = path.sub directory+"/", ""
+        [url, checks.map { |checker| checker.check(contents) }.flatten(1)]
     end
 end
 
