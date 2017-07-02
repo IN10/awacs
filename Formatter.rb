@@ -12,6 +12,8 @@ class Formatter
     private
 
     def formatResults results
+        return Pastel.new.green('No problems found') if results.count == 0
+
         results.map do |result|
             if result[:type] == Check::WARNING
                 Pastel.new.yellow(result[:message])
