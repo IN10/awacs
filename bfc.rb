@@ -1,84 +1,49 @@
 require 'rubygems'
-require 'watir'
 require 'tty-table'
 require 'tty-spinner'
 require 'pastel'
-require 'addressable/uri'
-
-# initialize globals for state
-$processed_links = []
-$pages = []
+require 'tmpdir'
 
 # Parse command line arguments
-$initial_url = ARGV[0]
+scope = ARGV[0]
 errorsOnly = ARGV.include? '--errors-only'
 
 # Show usage instructions when no start url is given
-unless $initial_url
-    puts "Usage: ruby bfc.rb http://website.com"
+unless scope
+    puts "Usage: ruby bfc.rb [scope]"
+    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
     exit 1
 end
 
+# Output variable scoped to program
+pages = []
 
-def has_error? browser
-    ['error', 'warning', 'php', 'Exception'].each do |oracle|
-        return true if browser.html.include? oracle
+# Determine if a string contains traces of errors
+def contains_error? html
+    ['error', 'warning', 'Exception'].each do |oracle|
+        return true if html.include? oracle
     end
     false
 end
 
-def internal_urls browser
-    tags = browser.links.select { |link| link.href.start_with? $initial_url } 
-    urls = tags.map { |tag| normalize(tag.href) }
-    urls.uniq
-end
+# Create a temporary directory for us to use
+Dir.mktmpdir do |directory|
+    puts directory
+    # Download the website with wget
+    `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait --no-directories -erobots=off #{scope})`
 
-def normalize url
-    url = Addressable::URI.parse(url).normalize
-    url.fragment = nil
-    url.to_s
-end
-
-# Process an url for errors and all its linked pages too
-def process url
-    url = normalize url
-    $spinner.update operation: "Processing #{url}"
-
-    # Guard: do not process the entire internet
-    return unless url.start_with? $initial_url
-
-    # Guard: do not process the same link twice
-    return if $processed_links.include? url
-    $processed_links << url
-
-    $browser.goto url
-    $pages << [url, has_error?($browser)]
-
-    # Proceed with all links
-    internal_urls($browser).each do |url|
-        process url
+    files = Dir.entries(directory).select {|f| !File.directory? f}
+    pages = files.map do |filename|
+        contents = File.open("#{directory}/#{filename}", "r").read
+        [filename, contains_error?(contents)]
     end
 end
 
-# start the spinner
-$spinner = TTY::Spinner.new "[:spinner] :operation"
-$spinner.update operation: 'Starting browser'
-$spinner.auto_spin
-
-# execute
-$browser = Watir::Browser.new :chrome
-$browser.driver.manage.timeouts.implicit_wait = 1
-process $initial_url
-$browser.close
-
 # Remove succesful results when not required
-$pages.select! { |page| page[1] } if errorsOnly
+pages.select! { |page| page[1] } if errorsOnly
 
-# report
-$spinner.update(operation: 'All done')
-$spinner.success
-
-$pages = $pages.map do |page|
+# Output results
+pages = pages.map do |page|
     result = page[1] ? 'yes' : 'no'
     if page[1]
         result = Pastel.new.white.on_red 'yes'
@@ -87,6 +52,6 @@ $pages = $pages.map do |page|
     end
     [page[0], result]
 end
-table = TTY::Table.new ['URL', 'Contains errors'],  $pages
-puts "\nResults"
+table = TTY::Table.new ['Path', 'Contains errors'],  pages
+puts "Results"
 puts table.render :ascii
