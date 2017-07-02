@@ -5,7 +5,7 @@ class Formatter
 
     def format rows
         rows.map do |row|
-            [row[0], formatResults(row[1])]
+            [row[:url], formatResults(row[:results])]
         end
     end
 

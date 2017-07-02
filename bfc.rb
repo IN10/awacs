@@ -34,12 +34,12 @@ Dir.mktmpdir do |directory|
         # Read the file, feed it to all checkers
         contents = File.open(path, "r").read
         url = path.sub directory+"/", ""
-        [url, checks.map { |checker| checker.check(contents) }.flatten(1)]
+        {url: url, results: checks.map { |checker| checker.check(contents) }.flatten(1)}
     end
 end
 
 # Remove succesful results when not required
-pages.select! { |page| page[1].count > 1 } if errorsOnly
+pages.select! { |page| page[:results].count > 1 } if errorsOnly
 
 # Format results
 table = TTY::Table.new ['Path', 'Results'], Formatter.new.format(pages)
