@@ -1,8 +1,10 @@
 require 'rubygems'
 require 'tty-table'
 require 'tty-spinner'
-require 'pastel'
 require 'tmpdir'
+
+require './Formatter.rb'
+require './checks/PrintsErrors.rb'
 
 # Parse command line arguments
 scope = ARGV[0]
@@ -18,13 +20,8 @@ end
 # Output variable scoped to program
 pages = []
 
-# Determine if a string contains traces of errors
-def contains_error? html
-    ['error', 'warning', 'Exception'].each do |oracle|
-        return true if html.include? oracle
-    end
-    false
-end
+# Define checks to run
+checks = [PrintsErrors.new]
 
 # Create a temporary directory for us to use
 Dir.mktmpdir do |directory|
@@ -34,23 +31,14 @@ Dir.mktmpdir do |directory|
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
         contents = File.open(path, "r").read
-        [path, contains_error?(contents)]
+        [path, checks.map { |checker| checker.check(contents) }.flatten(1)]
     end
 end
 
 # Remove succesful results when not required
-pages.select! { |page| page[1] } if errorsOnly
+pages.select! { |page| page[1].count > 1 } if errorsOnly
 
-# Output results
-pages = pages.map do |page|
-    result = page[1] ? 'yes' : 'no'
-    if page[1]
-        result = Pastel.new.white.on_red 'yes'
-    else
-        result = Pastel.new.green 'no'
-    end
-    [page[0], result]
-end
-table = TTY::Table.new ['Path', 'Contains errors'],  pages
+# Format results
+table = TTY::Table.new ['Path', 'Results'], Formatter.new.format(pages)
 puts "Results"
-puts table.render :ascii
+puts table.render :ascii, multiline: true
