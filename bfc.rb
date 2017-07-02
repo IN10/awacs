@@ -28,8 +28,10 @@ Dir.mktmpdir do |directory|
     # Download the website with wget
     `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})`
 
+    # Iterate over all downloaded files
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
+        # Read the file, feed it to all checkers
         contents = File.open(path, "r").read
         url = path.sub directory+"/", ""
         [url, checks.map { |checker| checker.check(contents) }.flatten(1)]
