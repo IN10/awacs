@@ -17,6 +17,11 @@ unless scope
     exit 1
 end
 
+# Show spinner
+spinner = TTY::Spinner.new "[:spinner] :operation"
+spinner.update operation: 'Initializing'
+spinner.auto_spin
+
 # Output variable scoped to program
 pages = []
 
@@ -24,11 +29,14 @@ pages = []
 checks = [PrintsErrors.new]
 
 # Create a temporary directory for us to use
+spinner.update operation: 'Creating temporary directory'
 Dir.mktmpdir do |directory|
+    spinner.update operation: 'Downloading all pages of the website'
     # Download the website with wget
     `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})`
 
     # Iterate over all downloaded files
+    spinner.update operation: 'Checking for problems'
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
         # Read the file, feed it to all checkers
@@ -39,9 +47,15 @@ Dir.mktmpdir do |directory|
 end
 
 # Remove succesful results when not required
-pages.select! { |page| page[:results].count > 1 } if errorsOnly
+if errorsOnly
+    spinner.update operation: 'Filtering results'
+    pages.select! { |page| page[:results].count > 1 }
+end
+
+spinner.update(operation: 'All done')
+spinner.success
 
 # Format results
 table = TTY::Table.new ['Path', 'Results'], Formatter.new.format(pages)
-puts "Results"
+puts "\nResults"
 puts table.render :ascii, multiline: true
