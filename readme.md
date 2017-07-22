@@ -23,8 +23,7 @@ Valid `options` are:
 | --errors-only | Only show pages with errors in the final output |
 | --silent | Suppress all output, returning only an exit code |
 | --debug | Verbose action output, no visual effects |
-| -h | Print usage instructions |
-| --help | Print usage instructions |
+| -h, --help | Print usage instructions |
 
 Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1
