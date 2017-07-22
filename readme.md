@@ -1,14 +1,22 @@
 # Basic Fault Checker (BFC)
 > Crawl through a domain and check every page for errors
 
+## Installation
+1. Install Ruby and wget.
+1. Install the dependencies by running `bundle install`.
+
 ## Usage
 ```bash
-bfc [url]
+bfc [url] [options]
 ```
 
-`url` should be the base URL of the website you're going to test, e.g. "http://delft.com". Do not use the homepage URL: this URL is used too for comparison which pages are to be included in the search. For example, if you specify "http://delft.com", "http://delft.com/page" will be included, but "http://instagram.com" won't be. 
+`url` should be the base URL of the website you're going to test, e.g. [http://www.website.com](http://www.website.com). This URL acts as a scope. For
+example, if you use [http://www.website.com/planning/](http://www.website.com/planning/) as the base URL
+[http://www.website.com/planning/phase-one](http://www.website.com/planning/phase-one) would be included, but
+[http://www.website.com/about-us](http://www.website.com/about-us) and [http://instagram.com](http://instagram.com) won't
+be included.
 
-Valid `options` are included in the following table:
+Valid `options` are:
 
 | Option | Effect |
 | ------ | ------ |
