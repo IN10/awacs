@@ -61,10 +61,17 @@ unless silent
     spinner.update(operation: 'All done')
     spinner.success
     spinner.update operation: 'Filtering results'
+
     formatter = Formatter.new results, errorsOnly
-    table = TTY::Table.new ['Path', 'Results'], formatter.tableData
-    puts "\nResults"
-    puts table.render :ascii, multiline: true
+    data = formatter.tableData
+
+    if data.count > 0
+        table = TTY::Table.new ['Path', 'Results'], data
+        puts "Results"
+        puts table.render :ascii, multiline: true
+    else
+        puts "No pages contained errors and/or warnings"
+    end
 end
 
 # Exit with proper return code
