@@ -18,8 +18,9 @@ debugMode = ARGV.include? '--debug'
 
 # Show usage instructions when no start url is given
 unless scope
-    puts "Usage: bfc [scope]" unless silent
+    puts "Usage: bfc [scope] [options]" unless silent
     puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" unless silent
+    puts "Options: --silent, --debug, --errors-only. See readme.md" unless silent
     exit 1
 end
 
