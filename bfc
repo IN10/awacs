@@ -67,7 +67,7 @@ unless silent
     puts table.render :ascii, multiline: true
 end
 
-hasErrors = pages.select! { |page| page[:results].count > 1 }
+hasErrors = pages.select { |page| page[:results].count > 1 }
 if hasErrors.count > 0
     exit 2
 else
