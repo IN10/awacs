@@ -6,6 +6,7 @@ require 'tty-spinner'
 require 'tmpdir'
 
 require_relative 'src/Formatter.rb'
+require_relative 'src/Debugger.rb'
 require_relative 'src/Results.rb'
 require_relative 'src/checks/PrintsErrors.rb'
 
@@ -13,20 +14,32 @@ require_relative 'src/checks/PrintsErrors.rb'
 scope = ARGV[0]
 errorsOnly = ARGV.include? '--errors-only'
 silent = ARGV.include? '--silent'
+debugMode = ARGV.include? '--debug'
 
 # Show usage instructions when no start url is given
 unless scope
-    puts "Usage: bfc [scope]" unless silent
-    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" unless silent
+    puts "Usage: bfc [scope]" if fancyUI
+    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" if fancyUI
     exit 1
 end
 
+if (silent && debugMode)
+    puts "Error: --silent and --debug cannot be combined"
+    exit 1
+end
+
+# Flag used to determine whether we want to show a spinner, formatted table, etc.
+fancyUI = !silent && !debugMode
+
 # Show spinner
-unless silent
+if fancyUI
     spinner = TTY::Spinner.new "[:spinner] :operation"
     spinner.update operation: 'Initializing'
     spinner.auto_spin
 end
+
+# Initialize debug output
+d = Debugger.new debugMode
 
 # Output variable scoped to program
 results = Results.new
@@ -35,16 +48,21 @@ results = Results.new
 checks = [PrintsErrors.new]
 
 # Create a temporary directory for us to use
-spinner.update operation: 'Creating temporary directory' unless silent
+spinner.update operation: 'Creating temporary directory' if fancyUI
 Dir.mktmpdir do |directory|
-    spinner.update operation: 'Downloading all pages of the website' unless silent
+    d.debug "Using temporary directory #{directory}"
+    spinner.update operation: 'Downloading all pages of the website' if fancyUI
+
     # Download the website with wget
-    `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})`
+    wget = "(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})"
+    d.debug "Downloading pages using wget: #{wget}"
+    `#{wget}`
 
     # Iterate over all downloaded files
-    spinner.update operation: 'Checking for problems' unless silent
+    spinner.update operation: 'Checking for problems' if fancyUI
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
+        d.debug "processing #{path}"
         # # Read the file, feed it to all checkers
         contents = File.open(path, "r").read
         url = path.sub directory+"/", ""
@@ -53,11 +71,12 @@ Dir.mktmpdir do |directory|
         checks.each do |checker|
             output << checker.check(contents)
         end
+        d.debug "#{output.flatten(1).count} errors/warnings"
     end
 end
 
 # Format results
-unless silent
+if fancyUI
     spinner.update(operation: 'All done')
     spinner.success
     spinner.update operation: 'Filtering results'
@@ -76,9 +95,12 @@ end
 
 # Exit with proper return code
 if results.hasErrors?
+    d.debug "done, found errors"
     exit 2
 elsif results.hasWarnings?
+    d.debug "done, found warnings"
     exit 3
 else
+    d.debug "done, found no errors and no warnings"
     exit 0
 end

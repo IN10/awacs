@@ -22,6 +22,7 @@ Valid `options` are:
 | ------ | ------ |
 | --errors-only | Only show pages with errors in the final output |
 | --silent | Supress all output, returning only an exit code |
+| --debug | Verbose action output, no visual effects |
 
 ## Exit codes
 The program returns an appropriate exit code based on its results:
