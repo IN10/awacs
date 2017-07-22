@@ -56,18 +56,12 @@ Dir.mktmpdir do |directory|
     end
 end
 
-# Remove succesful results when not required
-if errorsOnly
-    spinner.update operation: 'Filtering results' unless silent
-    pages.select! { |page| page[:results].count > 1 }
-end
-
-spinner.update(operation: 'All done') unless silent
-spinner.success unless silent
-
 # Format results
 unless silent
-    formatter = Formatter.new results
+    spinner.update(operation: 'All done')
+    spinner.success
+    spinner.update operation: 'Filtering results'
+    formatter = Formatter.new results, errorsOnly
     table = TTY::Table.new ['Path', 'Results'], formatter.tableData
     puts "\nResults"
     puts table.render :ascii, multiline: true

@@ -3,14 +3,17 @@ require_relative 'checks/Check.rb'
 
 class Formatter
 
-    def initialize results
+    def initialize results, errorsOnly
         @results = results
+        @errorsOnly = errorsOnly
     end
 
     def tableData
         data = []
         @results.all.each do |url, results|
-            data << [url, formatResults(results.flatten(1))]
+            entries = results.flatten(1)
+            next if @errorsOnly && entries.count == 0
+            data << [url, formatResults(entries)]
         end
         data
     end
