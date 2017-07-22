@@ -5,8 +5,9 @@ require 'tty-table'
 require 'tty-spinner'
 require 'tmpdir'
 
-require './src/Formatter.rb'
-require './src/checks/PrintsErrors.rb'
+require_relative 'src/Formatter.rb'
+require_relative 'src/Results.rb'
+require_relative 'src/checks/PrintsErrors.rb'
 
 # Parse command line arguments
 scope = ARGV[0]
@@ -28,7 +29,7 @@ unless silent
 end
 
 # Output variable scoped to program
-pages = []
+results = Results.new
 
 # Define checks to run
 checks = [PrintsErrors.new]
@@ -44,10 +45,14 @@ Dir.mktmpdir do |directory|
     spinner.update operation: 'Checking for problems' unless silent
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
-        # Read the file, feed it to all checkers
+        # # Read the file, feed it to all checkers
         contents = File.open(path, "r").read
         url = path.sub directory+"/", ""
-        {url: url, results: checks.map { |checker| checker.check(contents) }.flatten(1)}
+
+        output = results.addPage url
+        checks.each do |checker|
+            output << checker.check(contents)
+        end
     end
 end
 
@@ -62,13 +67,13 @@ spinner.success unless silent
 
 # Format results
 unless silent
-    table = TTY::Table.new ['Path', 'Results'], Formatter.new.format(pages)
+    formatter = Formatter.new results
+    table = TTY::Table.new ['Path', 'Results'], formatter.tableData
     puts "\nResults"
     puts table.render :ascii, multiline: true
 end
 
-hasErrors = pages.select { |page| page[:results].count > 1 }
-if hasErrors.count > 0
+if results.hasErrors?
     exit 2
 else
     exit 0

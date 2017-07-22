@@ -3,10 +3,16 @@ require_relative 'checks/Check.rb'
 
 class Formatter
 
-    def format rows
-        rows.map do |row|
-            [row[:url], formatResults(row[:results])]
+    def initialize results
+        @results = results
+    end
+
+    def tableData
+        data = []
+        @results.all.each do |url, results|
+            data << [url, formatResults(results.flatten(1))]
         end
+        data
     end
 
     private
