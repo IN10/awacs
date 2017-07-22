@@ -17,7 +17,7 @@ def usage_instructions
 end
 
 # Parse command line arguments
-scope = ARGV.shift
+scope = ARGV[0]
 errorsOnly = ARGV.include? '--errors-only'
 silent = ARGV.include? '--silent'
 debugMode = ARGV.include? '--debug'
@@ -44,6 +44,7 @@ end
 exit 1 if (silent && debugMode)
 
 # Fail when unknown options are encountered
+ARGV.shift! # remove the scope from consideration
 unknown_options = ARGV - ['--errors-only', '--silent', '--debug']
 if unknown_options.count > 0
     unknown_options.each { |o| puts "Error: unknown option #{o}" } unless silent
