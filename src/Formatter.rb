@@ -1,5 +1,5 @@
 require 'pastel'
-require './checks/Check.rb'
+require_relative 'checks/Check.rb'
 
 class Formatter
 

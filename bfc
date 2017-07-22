@@ -5,8 +5,8 @@ require 'tty-table'
 require 'tty-spinner'
 require 'tmpdir'
 
-require './Formatter.rb'
-require './checks/PrintsErrors.rb'
+require './src/Formatter.rb'
+require './src/checks/PrintsErrors.rb'
 
 # Parse command line arguments
 scope = ARGV[0]

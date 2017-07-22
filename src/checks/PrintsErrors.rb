@@ -1,4 +1,4 @@
-require './checks/Check.rb'
+require_relative 'Check.rb'
 
 class PrintsErrors < Check
 
