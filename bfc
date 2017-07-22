@@ -11,18 +11,21 @@ require './checks/PrintsErrors.rb'
 # Parse command line arguments
 scope = ARGV[0]
 errorsOnly = ARGV.include? '--errors-only'
+silent = ARGV.include? '--silent'
 
 # Show usage instructions when no start url is given
 unless scope
-    puts "Usage: bfc [scope]"
-    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
+    puts "Usage: bfc [scope]" unless silent
+    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" unless silent
     exit 1
 end
 
 # Show spinner
-spinner = TTY::Spinner.new "[:spinner] :operation"
-spinner.update operation: 'Initializing'
-spinner.auto_spin
+unless silent
+    spinner = TTY::Spinner.new "[:spinner] :operation"
+    spinner.update operation: 'Initializing'
+    spinner.auto_spin
+end
 
 # Output variable scoped to program
 pages = []
@@ -31,14 +34,14 @@ pages = []
 checks = [PrintsErrors.new]
 
 # Create a temporary directory for us to use
-spinner.update operation: 'Creating temporary directory'
+spinner.update operation: 'Creating temporary directory' unless silent
 Dir.mktmpdir do |directory|
-    spinner.update operation: 'Downloading all pages of the website'
+    spinner.update operation: 'Downloading all pages of the website' unless silent
     # Download the website with wget
     `(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})`
 
     # Iterate over all downloaded files
-    spinner.update operation: 'Checking for problems'
+    spinner.update operation: 'Checking for problems' unless silent
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
         # Read the file, feed it to all checkers
@@ -50,14 +53,23 @@ end
 
 # Remove succesful results when not required
 if errorsOnly
-    spinner.update operation: 'Filtering results'
+    spinner.update operation: 'Filtering results' unless silent
     pages.select! { |page| page[:results].count > 1 }
 end
 
-spinner.update(operation: 'All done')
-spinner.success
+spinner.update(operation: 'All done') unless silent
+spinner.success unless silent
 
 # Format results
-table = TTY::Table.new ['Path', 'Results'], Formatter.new.format(pages)
-puts "\nResults"
-puts table.render :ascii, multiline: true
+unless silent
+    table = TTY::Table.new ['Path', 'Results'], Formatter.new.format(pages)
+    puts "\nResults"
+    puts table.render :ascii, multiline: true
+end
+
+hasErrors = pages.select! { |page| page[:results].count > 1 }
+if hasErrors.count > 0
+    exit 2
+else
+    exit 0
+end

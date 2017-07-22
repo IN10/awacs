@@ -21,6 +21,16 @@ Valid `options` are:
 | Option | Effect |
 | ------ | ------ |
 | --errors-only | Only show pages with errors in the final output |
+| --silent | Supress all output, returning only an exit code |
+
+## Exit codes
+The program returns an appropriate exit code based on its results:
+
+| Code | Situation |
+| ---- | --------- |
+|    0 | No errors or warnings |
+|    1 | Invalid parameters given |
+|    2 | Website triggered errors and/or warnings |
 
 ## Technology
 * Ruby
