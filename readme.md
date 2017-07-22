@@ -24,6 +24,10 @@ Valid `options` are:
 | --silent | Suppress all output, returning only an exit code |
 | --debug | Verbose action output, no visual effects |
 
+Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
+print an error message (because the program is silent). The exit code will be 1
+(invalid parameters given), and the program will not continue.
+
 ## Exit codes
 The program returns an appropriate exit code based on its results:
 

@@ -25,7 +25,6 @@ if !scope || scope.start_with?('-')
 end
 
 if (silent && debugMode)
-    puts "Error: --silent and --debug cannot be combined"
     exit 1
 end
 
