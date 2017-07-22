@@ -24,6 +24,7 @@ Valid `options` are:
 | --silent | Suppress all output, returning only an exit code |
 | --debug | Verbose action output, no visual effects |
 | -h, --help | Print usage instructions |
+| -v, --version | Print version number |
 
 Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1

@@ -22,6 +22,12 @@ errorsOnly = ARGV.include? '--errors-only'
 silent = ARGV.include? '--silent'
 debugMode = ARGV.include? '--debug'
 help = ARGV.include?('--help') || ARGV.include?('-h')
+version = ARGV.include?('--version') || ARGV.include?('-v')
+
+if version
+    puts "bfc version 1.0.0\n" unless silent
+    exit 0
+end
 
 if help
     usage_instructions unless silent
