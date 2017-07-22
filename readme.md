@@ -16,7 +16,7 @@ Valid `options` are included in the following table:
 
 ## Technology
 * Ruby
-* Watir
+* wget
 
 ## Development
 Jakob.
