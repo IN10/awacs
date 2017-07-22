@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'rubygems'
 require 'tty-table'
 require 'tty-spinner'
@@ -12,7 +14,7 @@ errorsOnly = ARGV.include? '--errors-only'
 
 # Show usage instructions when no start url is given
 unless scope
-    puts "Usage: ruby bfc.rb [scope]"
+    puts "Usage: bfc [scope]"
     puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
     exit 1
 end
