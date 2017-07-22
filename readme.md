@@ -31,6 +31,7 @@ The program returns an appropriate exit code based on its results:
 |    0 | No errors or warnings |
 |    1 | Invalid parameters given |
 |    2 | Website triggered errors and/or warnings |
+|    3 | Website triggered warnings |
 
 ## Technology
 * Ruby
