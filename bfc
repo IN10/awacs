@@ -18,24 +18,21 @@ debugMode = ARGV.include? '--debug'
 
 # Show usage instructions when no start url is given
 if !scope || scope.start_with?('-')
-    puts "Usage: bfc [scope] [options]" unless silent
-    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" unless silent
-    puts "Options: --silent, --debug, --errors-only. See readme.md" unless silent
+    unless silent
+        puts "Usage: bfc [scope] [options]"
+        puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
+        puts "Options: --silent, --debug, --errors-only. See readme.md"
+    end
     exit 1
 end
 
-if (silent && debugMode)
-    exit 1
-end
+# --silent and --debug cannot be combined
+exit 1 if (silent && debugMode)
 
 # Fail when unknown options are encountered
 unknown_options = ARGV - ['--errors-only', '--silent', '--debug']
 if unknown_options.count > 0
-    unless silent
-        unknown_options.each do |option|
-            puts "Error: unknown option #{option}"
-        end
-    end
+    unknown_options.each { |o| puts "Error: unknown option #{o}" } unless silent
     exit 1
 end
 
