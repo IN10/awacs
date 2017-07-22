@@ -21,7 +21,7 @@ Valid `options` are:
 | Option | Effect |
 | ------ | ------ |
 | --errors-only | Only show pages with errors in the final output |
-| --silent | Supress all output, returning only an exit code |
+| --silent | Suppress all output, returning only an exit code |
 | --debug | Verbose action output, no visual effects |
 
 ## Exit codes
