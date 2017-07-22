@@ -18,8 +18,8 @@ debugMode = ARGV.include? '--debug'
 
 # Show usage instructions when no start url is given
 unless scope
-    puts "Usage: bfc [scope]" if fancyUI
-    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" if fancyUI
+    puts "Usage: bfc [scope]" unless silent
+    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws" unless silent
     exit 1
 end
 
