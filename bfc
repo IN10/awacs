@@ -11,7 +11,7 @@ require_relative 'src/Results.rb'
 require_relative 'src/checks/PrintsErrors.rb'
 
 # Parse command line arguments
-scope = ARGV[0]
+scope = ARGV.shift
 errorsOnly = ARGV.include? '--errors-only'
 silent = ARGV.include? '--silent'
 debugMode = ARGV.include? '--debug'
@@ -26,6 +26,17 @@ end
 
 if (silent && debugMode)
     puts "Error: --silent and --debug cannot be combined"
+    exit 1
+end
+
+# Fail when unknown options are encountered
+unknown_options = ARGV - ['--errors-only', '--silent', '--debug']
+if unknown_options.count > 0
+    unless silent
+        unknown_options.each do |option|
+            puts "Error: unknown option #{option}"
+        end
+    end
     exit 1
 end
 
