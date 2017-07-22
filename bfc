@@ -15,13 +15,14 @@ scope = ARGV.shift
 errorsOnly = ARGV.include? '--errors-only'
 silent = ARGV.include? '--silent'
 debugMode = ARGV.include? '--debug'
+help = ARGV.include?('--help') || ARGV.include?('-h')
 
 # Show usage instructions when no start url is given
-if !scope || scope.start_with?('-')
+if help || !scope || scope.start_with?('-')
     unless silent
         puts "Usage: bfc [scope] [options]"
         puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
-        puts "Options: --silent, --debug, --errors-only. See readme.md"
+        puts "Options: --silent, --debug, --errors-only, --help. See readme.md"
     end
     exit 1
 end
