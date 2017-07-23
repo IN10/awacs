@@ -6,6 +6,7 @@ require 'tmpdir'
 
 require_relative 'src/Formatter.rb'
 require_relative 'src/Debugger.rb'
+require_relative 'src/Arguments.rb'
 require_relative 'src/LogAnalyzer.rb'
 require_relative 'src/Results.rb'
 require_relative 'src/checks/PrintsErrors.rb'
@@ -17,12 +18,14 @@ def usage_instructions
 end
 
 # Parse command line arguments
-scope = ARGV[0]
-errorsOnly = ARGV.include? '--errors-only'
-silent = ARGV.include? '--silent'
-debugMode = ARGV.include? '--debug'
-help = ARGV.include?('--help') || ARGV.include?('-h')
-version = ARGV.include?('--version') || ARGV.include?('-v')
+args = Arguments.new(ARGV)
+
+scope = args.scope
+errorsOnly = args.hasAny? '--errors-only'
+silent = args.hasAny? '--silent'
+debugMode = args.hasAny? '--debug'
+help = args.hasAny? '--help', '-h'
+version = args.hasAny? '--version', '-v'
 
 if version
     puts "bfc version 1.0.0\n" unless silent
@@ -35,7 +38,7 @@ if help
 end
 
 # Show usage instructions when no start url is given
-if !scope || scope.start_with?('-')
+unless scope
     usage_instructions unless silent
     exit 1
 end
@@ -44,8 +47,7 @@ end
 exit 1 if (silent && debugMode)
 
 # Fail when unknown options are encountered
-ARGV.shift # remove the scope from consideration
-unknown_options = ARGV - ['--errors-only', '--silent', '--debug']
+unknown_options = args.unknown_options
 if unknown_options.count > 0
     unknown_options.each { |o| puts "Error: unknown option #{o}" } unless silent
     exit 1
