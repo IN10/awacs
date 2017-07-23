@@ -1,4 +1,5 @@
 require 'pastel'
+require 'tty-table'
 require_relative 'checks/Check.rb'
 
 class Formatter
@@ -7,6 +8,19 @@ class Formatter
         @results = results
         @errorsOnly = errorsOnly
     end
+
+    def render
+        data = tableData
+
+        if data.count > 0
+            table = TTY::Table.new ['Path', 'Results'], data
+            return "Results\n" + table.render(:ascii, multiline: true)
+        else
+            return "No pages contained errors and/or warnings"
+        end
+    end
+
+    private
 
     def tableData
         data = []
@@ -17,8 +31,6 @@ class Formatter
         end
         data
     end
-
-    private
 
     def formatResults results
         return Pastel.new.green('No problems found') if results.count == 0

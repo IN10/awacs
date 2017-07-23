@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require 'tty-table'
 require 'tty-spinner'
 require 'tmpdir'
 
@@ -105,15 +104,7 @@ if fancyUI
     spinner.update operation: 'Filtering results'
 
     formatter = Formatter.new results, errorsOnly
-    data = formatter.tableData
-
-    if data.count > 0
-        table = TTY::Table.new ['Path', 'Results'], data
-        puts "Results"
-        puts table.render :ascii, multiline: true
-    else
-        puts "No pages contained errors and/or warnings"
-    end
+    puts formatter.render
 end
 
 # Exit with proper return code
