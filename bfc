@@ -6,6 +6,7 @@ require 'tmpdir'
 
 require_relative 'src/Formatter.rb'
 require_relative 'src/Debugger.rb'
+require_relative 'src/LogAnalyzer.rb'
 require_relative 'src/Results.rb'
 require_relative 'src/checks/PrintsErrors.rb'
 
@@ -76,12 +77,19 @@ Dir.mktmpdir do |directory|
     spinner.update operation: 'Downloading all pages of the website' if fancyUI
 
     # Download the website with wget
-    wget = "(cd #{directory}; wget -r -np --follow-tags=a --random-wait -erobots=off -nc #{scope})"
+    wget = "(cd #{directory}; wget -r -np -nv --follow-tags=a --random-wait -erobots=off -nc -o wget.log #{scope})"
     d.debug "Downloading pages using wget: #{wget}"
     `#{wget}`
 
+    # Check the wget log for errors
+    spinner.update operation: 'Analyzing download log file' if fancyUI
+    logFile = "#{directory}/wget.log"
+    analyzer = LogAnalyzer.new logFile, results
+    analyzer.analyze
+    File.delete logFile
+
     # Iterate over all downloaded files
-    spinner.update operation: 'Checking for problems' if fancyUI
+    spinner.update operation: 'Checking for problems in downloaded pages' if fancyUI
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
         d.debug "processing #{path}"
