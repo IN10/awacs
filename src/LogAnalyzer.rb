@@ -10,10 +10,10 @@ class LogAnalyzer
 
     def analyze
         log = File.open(@file, "r").read
-        regex = /http:\/\/(.*):\n.* ERROR ([0-9]{3}: .*).\n/
+        regex = /http:\/\/(.*):\n.* ERROR ([0-9]{3}): (.*).\n/
         log.scan(regex).each do |error|
             page = @results.addPage(error[0])
-            page << {type: Check::ERROR, message: "HTTP error: #{error[1]}"}
+            page << {type: Check::ERROR, message: "HTTP error: #{error[1]} #{error[2]}"}
         end
     end
 end
