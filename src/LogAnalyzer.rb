@@ -1,5 +1,6 @@
 require_relative 'checks/Check.rb'
 
+# Parse the wget log file for HTTP errors
 class LogAnalyzer
 
     def initialize logFile, results

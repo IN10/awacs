@@ -1,3 +1,4 @@
+# Print debug messages when debugging is enabled
 class Debugger
 
     def initialize enabled

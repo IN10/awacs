@@ -1,5 +1,6 @@
 require_relative 'checks/Check.rb'
 
+# Results of the analysis
 class Results
 
     def initialize
