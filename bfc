@@ -76,7 +76,7 @@ Dir.mktmpdir do |directory|
     spinner.update operation: 'Downloading all pages of the website' if fancyUI
 
     # Download the website with wget
-    wget = "(cd #{directory}; wget --quiet --recursive --no-parent --follow-tags=a --random-wait -erobots=off #{scope})"
+    wget = "(cd #{directory}; wget -r -np --follow-tags=a --random-wait -erobots=off -nc #{scope})"
     d.debug "Downloading pages using wget: #{wget}"
     `#{wget}`
 
