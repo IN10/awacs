@@ -30,7 +30,7 @@ class Formatter
             next if @errorsOnly && entries.count == 0
             data << [url, formatResults(entries)]
         end
-        data
+        data.sort! { |a,b| a[0] <=> b[0] }
     end
 
     def formatResults results
