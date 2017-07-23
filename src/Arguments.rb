@@ -10,7 +10,9 @@ class Arguments
             '--help',
             '-h',
             '--version',
-            '-v'
+            '-v',
+            '--username',
+            '--password'
         ]
     end
 
@@ -18,6 +20,14 @@ class Arguments
         scope = @argv[0]
         return nil if !scope || scope.start_with?('-')
         scope
+    end
+
+    def username
+        get '--username'
+    end
+
+    def password
+        get '--password'
     end
 
     def hasAny? *keys
@@ -36,5 +46,11 @@ class Arguments
             @known_options.any? { |ko| arg.start_with? ko }
         end
         args
+    end
+
+    private
+
+    def get key
+        @argv.select {|arg| arg.start_with? key}.first.split('=').last
     end
 end

@@ -23,6 +23,8 @@ Valid `options` are:
 | --errors-only | Only show pages with errors in the final output |
 | --silent | Suppress all output, returning only an exit code |
 | --debug | Verbose action output, no visual effects |
+| --user | HTTP Basic Authentication username |
+| --password | HTTP Basic Authentication password |
 | -h, --help | Print usage instructions |
 | -v, --version | Print version number |
 
