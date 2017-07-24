@@ -2,7 +2,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     equatable (0.5.0)
+    mini_portile2 (2.2.0)
     necromancer (0.4.0)
+    nokogiri (1.8.0)
+      mini_portile2 (~> 2.2.0)
     pastel (0.7.1)
       equatable (~> 0.5.0)
       tty-color (~> 0.4.0)
@@ -26,6 +29,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  nokogiri (~> 1.8)
   pastel (~> 0.7.1)
   tty-spinner (~> 0.4.1)
   tty-table (~> 0.8.0)
