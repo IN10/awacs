@@ -10,6 +10,7 @@ require_relative 'src/Arguments.rb'
 require_relative 'src/LogAnalyzer.rb'
 require_relative 'src/Results.rb'
 require_relative 'src/checks/PrintsErrors.rb'
+require_relative 'src/checks/BrokenLinks.rb'
 
 def usage_instructions
     puts "Usage: bfc [scope] [options]"
@@ -71,7 +72,7 @@ d = Debugger.new debugMode
 results = Results.new
 
 # Define checks to run
-checks = [PrintsErrors.new]
+checks = [PrintsErrors.new, BrokenLinks.new]
 
 # Create a temporary directory for us to use
 spinner.update operation: 'Creating temporary directory' if fancyUI
