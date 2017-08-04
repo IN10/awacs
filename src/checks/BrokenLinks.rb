@@ -36,7 +36,9 @@ class BrokenLinks < Check
         http = Net::HTTP.new uri.host, uri.port
         http.use_ssl = (uri.scheme == "https")
         http.start do |http|
-            status = http.request(Net::HTTP::Head.new(uri)).code.to_i
+            request = Net::HTTP::Head.new uri
+            request.basic_auth(@arguments.username, @arguments.password) if @arguments.username && @arguments.password
+            status = http.request(request).code.to_i
             @cache[uri] = status
             return status
         end
