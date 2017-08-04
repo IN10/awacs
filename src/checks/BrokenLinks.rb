@@ -5,8 +5,8 @@ require_relative 'Check.rb'
 
 class BrokenLinks < Check
 
-    def initialize scope
-        @scope = scope
+    def initialize arguments
+        super arguments
         @cache = {}
     end
 
@@ -19,7 +19,7 @@ class BrokenLinks < Check
         urls.reject! { |u| u.start_with?('tel:') || u.start_with?('mailto:') || u.start_with?('#') }
 
         # Construct to full URLs
-        urls.map! { |u| URI.join @scope, u }
+        urls.map! { |u| URI.join @arguments.scope, u }
 
         urls.each do |uri|
             status = status? uri
