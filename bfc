@@ -72,7 +72,7 @@ d = Debugger.new debugMode
 results = Results.new
 
 # Define checks to run
-checks = [PrintsErrors.new, BrokenLinks.new]
+checks = [PrintsErrors.new, BrokenLinks.new(scope)]
 
 # Create a temporary directory for us to use
 spinner.update operation: 'Creating temporary directory' if fancyUI
