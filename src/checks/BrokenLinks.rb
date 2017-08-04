@@ -7,6 +7,7 @@ class BrokenLinks < Check
 
     def initialize scope
         @scope = scope
+        @cache = {}
     end
 
     def check page
@@ -21,13 +22,23 @@ class BrokenLinks < Check
         urls.map! { |u| URI.join @scope, u }
 
         urls.each do |uri|
-            http = Net::HTTP.new uri.host, uri.port
-            http.use_ssl = (uri.scheme == "https")
-            http.start do |http|
-                status = http.request(Net::HTTP::Head.new(uri)).code.to_i
-                results << {type: Check::WARNING, message: "Broken link: #{uri} (HTTP #{status})"} if status < 200 || status >= 400
-            end
+            status = status? uri
+            results << {type: Check::WARNING, message: "Broken link: #{uri} (HTTP #{status})"} if status < 200 || status >= 400
         end
         results
+    end
+
+    private 
+
+    def status? uri
+        return @cache[uri] if @cache.include? uri
+
+        http = Net::HTTP.new uri.host, uri.port
+        http.use_ssl = (uri.scheme == "https")
+        http.start do |http|
+            status = http.request(Net::HTTP::Head.new(uri)).code.to_i
+            @cache[uri] = status
+            return status
+        end
     end
 end
