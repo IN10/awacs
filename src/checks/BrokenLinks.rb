@@ -7,7 +7,7 @@ class BrokenLinks < Check
         html = Nokogiri::HTML page
         urls = html.xpath('//a[@href]').map { |a| a.attr :href }
         urls.reject! do |url|
-            url.start_with?('tel:') || url.start_with?('mailto:')
+            url.start_with?('tel:') || url.start_with?('mailto:') || url.start_with?('#')
         end
 
         puts urls.inspect
