@@ -51,6 +51,11 @@ class Arguments
     private
 
     def get key
-        @argv.select {|arg| arg.start_with? key}.first.split('=').last
+        candidates = @argv.select {|arg| arg.start_with? key}
+        return nil if candidates.count == 0
+        candidate = candidates.first
+        parts = candidate.split('=')
+        return nil if parts.count < 2
+        parts.last
     end
 end
