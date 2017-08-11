@@ -3,6 +3,11 @@ require 'uri'
 require 'net/http'
 require_relative 'Check.rb'
 
+# Check for broken links in all downloaded pages
+#
+# These are *NOT* the request failures in LogAnalyzer, which only reports failures
+# for pages it actually downloads, i.e. that are in scope. This checks all <a>
+# tags on a page regardless of where they lead.
 class BrokenLinks < Check
 
     def initialize arguments

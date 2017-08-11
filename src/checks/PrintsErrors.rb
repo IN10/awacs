@@ -1,5 +1,7 @@
 require_relative 'Check.rb'
 
+# Check that the page does not contain certain words like "exception" or "warning"
+# that often indicate server-side errors.
 class PrintsErrors < Check
 
     def check page
