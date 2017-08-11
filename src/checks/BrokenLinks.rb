@@ -1,6 +1,6 @@
 require 'nokogiri'
-require 'uri'
 require 'net/http'
+require 'addressable'
 require_relative 'Check.rb'
 
 # Check for broken links in all downloaded pages
@@ -24,7 +24,7 @@ class BrokenLinks < Check
         urls.reject! { |u| u.start_with?('tel:') || u.start_with?('mailto:') || u.start_with?('#') }
 
         # Construct to full URLs
-        urls.map! { |u| URI.join @arguments.scope, u }
+        urls.map! { |u| Addressable::URI.join @arguments.scope, u }
 
         urls.each do |uri|
             status = status? uri
