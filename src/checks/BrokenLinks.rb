@@ -28,7 +28,7 @@ class BrokenLinks < Check
 
         urls.each do |uri|
             status = status? uri
-            results << {type: Check::WARNING, message: "Broken link: #{uri} (HTTP #{status})"} if status < 200 || status >= 400
+            results << {type: Check::WARNING, message: "Broken link: #{uri} (HTTP #{status})"} if status >= 400
         end
         results
     end
