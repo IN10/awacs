@@ -48,8 +48,11 @@ The program returns an appropriate exit code based on its results:
 |    3 | Website triggered warnings |
 
 ## Technology
-* Ruby
-* wget
+Written in Ruby, this program uses wget to download all pages in scope. Files are
+parsed as strings, and than fed to various Checker-classes which have their own
+dependencies to do various things. For example, we use nokogiri to parse all \<a\>
+tags in a page and OpenURI to check their responses, in order to find all broken
+links on every page.
 
 ## Development
 Jakob.
