@@ -29,6 +29,7 @@ class BrokenLinks < Check
 
         urls.each do |uri|
             status = status? uri
+            $d.debug "testing for broken link: #{uri} -> #{status}"
             if status == 'read_timeout'
                 results << {type: Check::WARNING, message: "Broken link: #{uri} (connection timeout)"}
             elsif status == 'socket_error'

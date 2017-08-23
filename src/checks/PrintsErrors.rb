@@ -8,11 +8,13 @@ class PrintsErrors < Check
         results = []
 
         if page.include? 'warning'
+            $d.debug "found 'warning' on page"
             results << {type: Check::WARNING, message: "Page contains 'warning'"}
         end
 
         ['error', 'Exception'].each do |oracle|
             if page.include? oracle
+                $d.debug "found '#{oracle}' on page"
                 results << {type: Check::ERROR, message: "Page contains an error keyword"}
             end
         end
