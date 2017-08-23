@@ -13,8 +13,10 @@ GEM
       tty-color (~> 0.4.0)
     public_suffix (2.0.5)
     tty-color (0.4.2)
+    tty-cursor (0.5.0)
     tty-screen (0.5.0)
-    tty-spinner (0.4.1)
+    tty-spinner (0.5.0)
+      tty-cursor (>= 0.5.0)
     tty-table (0.8.0)
       equatable (~> 0.5.0)
       necromancer (~> 0.4.0)
@@ -35,7 +37,7 @@ DEPENDENCIES
   addressable (~> 2.5.1)
   nokogiri (~> 1.8)
   pastel (~> 0.7.1)
-  tty-spinner (~> 0.4.1)
+  tty-spinner (~> 0.5.0)
   tty-table (~> 0.8.0)
 
 BUNDLED WITH
