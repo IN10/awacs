@@ -9,14 +9,9 @@ require_relative 'src/Debugger.rb'
 require_relative 'src/Arguments.rb'
 require_relative 'src/LogAnalyzer.rb'
 require_relative 'src/Results.rb'
+require_relative 'src/usage_instructions.rb'
 require_relative 'src/checks/PrintsErrors.rb'
 require_relative 'src/checks/BrokenLinks.rb'
-
-def usage_instructions
-    puts "Usage: bfc [scope] [options]"
-    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
-    puts "Options: --silent, --debug, --errors-only, --help. See readme.md"
-end
 
 # Parse command line arguments
 args = Arguments.new(ARGV)

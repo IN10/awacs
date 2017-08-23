@@ -1,0 +1,15 @@
+def usage_instructions
+    puts "Basic Fault Checker (BFC) version 1.0.0"
+    puts "Crawl through a domain and check every page for errors"
+    puts "Usage: bfc [scope] [options]"
+    puts "Scope should be a website directory, e.g. http://in10.nl/nieuws"
+    puts "Options:"
+    puts "--errors-only    Only show pages with errors in the final output"
+    puts "--silent         Suppress all output, returning only an exit code"
+    puts "--debug          Verbose action output, no visual effects"
+    puts "--fast           Will skip all checks marked as slow"
+    puts "--username       HTTP Basic Authentication username"
+    puts "--password       HTTP Basic Authentication password"
+    puts "--help, -h       Print usage instructions"
+    puts "--version, -v    Print version number"
+end
