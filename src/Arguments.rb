@@ -12,7 +12,8 @@ class Arguments
             '--version',
             '-v',
             '--username',
-            '--password'
+            '--password',
+            '--fast'
         ]
     end
 

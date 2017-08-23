@@ -12,6 +12,7 @@ class BrokenLinks < Check
 
     def initialize arguments
         super arguments
+        @slow = true
         @cache = {}
     end
 
