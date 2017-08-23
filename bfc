@@ -61,7 +61,7 @@ if fancyUI
 end
 
 # Initialize debug output
-d = Debugger.new debugMode
+$d = Debugger.new debugMode
 
 # Output variable scoped to program
 results = Results.new
@@ -74,13 +74,13 @@ checks.reject!(&:slow) if args.hasAny? '--fast'
 # Create a temporary directory for us to use
 spinner.update operation: 'Creating temporary directory' if fancyUI
 Dir.mktmpdir do |directory|
-    d.debug "Using temporary directory #{directory}"
+    $d.debug "Using temporary directory #{directory}"
     spinner.update operation: 'Downloading all pages of the website' if fancyUI
 
     # Download the website with wget
     auth = basicAuth ? "--auth-no-challenge --user=#{args.username} --password=#{args.password}" : ''
     wget = "(cd #{directory}; wget -r -np -nv --follow-tags=a --random-wait -erobots=off -nc -o wget.log #{auth} #{scope})"
-    d.debug "Downloading pages using wget: #{wget}"
+    $d.debug "Downloading pages using wget: #{wget}"
     `#{wget}`
 
     # Check the wget log for errors
@@ -94,7 +94,7 @@ Dir.mktmpdir do |directory|
     spinner.update operation: 'Checking for problems in downloaded pages' if fancyUI
     files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
     pages = files.map do |path|
-        d.debug "processing #{path}"
+        $d.debug "processing #{path}"
         # # Read the file, feed it to all checkers
         contents = File.open(path, "r").read
         url = path.sub directory+"/", ""
@@ -103,7 +103,7 @@ Dir.mktmpdir do |directory|
         checks.each do |checker|
             output << checker.check(contents)
         end
-        d.debug "#{output.flatten(1).count} errors/warnings"
+        $d.debug "#{output.flatten(1).count} errors/warnings"
     end
 end
 
@@ -119,12 +119,12 @@ end
 
 # Exit with proper return code
 if results.hasErrors?
-    d.debug "done, found errors"
+    $d.debug "done, found errors"
     exit 2
 elsif results.hasWarnings?
-    d.debug "done, found warnings"
+    $d.debug "done, found warnings"
     exit 3
 else
-    d.debug "done, found no errors and no warnings"
+    $d.debug "done, found no errors and no warnings"
     exit 0
 end
