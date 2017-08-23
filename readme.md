@@ -55,4 +55,4 @@ tags in a page and OpenURI to check their responses, in order to find all broken
 links on every page.
 
 ## Development
-Jakob.
+[Jakob Buis](http://www.jakobbuis.nl)
