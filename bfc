@@ -16,20 +16,17 @@ require_relative 'src/checks/BrokenLinks.rb'
 # Parse command line arguments
 args = Arguments.new(ARGV)
 
+# Parse some arguments we use a lot
 scope = args.scope
-errorsOnly = args.hasAny? '--errors-only'
 silent = args.hasAny? '--silent'
 debugMode = args.hasAny? '--debug'
-basicAuth = args.hasAny? '--username', '--password'
-help = args.hasAny? '--help', '-h'
-version = args.hasAny? '--version', '-v'
 
-if version
+if args.hasAny? '--version', '-v'
     puts "bfc version 1.0.0\n" unless silent
     exit 0
 end
 
-if help
+if args.hasAny? '--help', '-h'
     usage_instructions unless silent
     exit 0
 end
@@ -77,8 +74,13 @@ Dir.mktmpdir do |directory|
     $d.debug "Using temporary directory #{directory}"
     spinner.update operation: 'Downloading all pages of the website' if fancyUI
 
+    # Setup authentication if required
+    auth = ""
+    if args.hasAny? '--username', '--password'
+        auth = "--auth-no-challenge --user=#{args.username} --password=#{args.password}"
+    end
+
     # Download the website with wget
-    auth = basicAuth ? "--auth-no-challenge --user=#{args.username} --password=#{args.password}" : ''
     wget = "(cd #{directory}; wget -r -np -nv --follow-tags=a --random-wait -erobots=off -nc -o wget.log #{auth} #{scope})"
     $d.debug "Downloading pages using wget: #{wget}"
     `#{wget}`
@@ -113,7 +115,7 @@ if fancyUI
     spinner.success
     spinner.update operation: 'Filtering results'
 
-    formatter = Formatter.new results, errorsOnly
+    formatter = Formatter.new results, args.hasAny?('--errors-only')
     puts formatter.render
 end
 
