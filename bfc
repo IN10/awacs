@@ -15,8 +15,6 @@ require_relative 'src/checks/BrokenLinks.rb'
 
 # Parse command line arguments
 args = Arguments.new(ARGV)
-
-# Parse some arguments we use a lot
 scope = args.scope
 silent = args.hasAny? '--silent'
 debugMode = args.hasAny? '--debug'
