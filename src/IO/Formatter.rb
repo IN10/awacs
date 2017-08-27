@@ -1,6 +1,6 @@
 require 'pastel'
 require 'tty-table'
-require_relative 'checks/Check.rb'
+require_relative '../checks/Check.rb'
 
 # Format results into a pretty table
 class Formatter

@@ -1,4 +1,4 @@
-require_relative 'checks/Check.rb'
+require_relative 'Check.rb'
 
 # Parse the wget log file for HTTP errors
 class LogAnalyzer
