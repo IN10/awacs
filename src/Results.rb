@@ -23,7 +23,7 @@ class Results
 
     def hasWarnings?
         entries = @pages.values.flatten(2)
-        errors = entries.select { |entry| entry[:type] == Check::WARNING }
-        errors.count > 0
+        warnings = entries.select { |entry| entry[:type] == Check::WARNING }
+        warnings.count > 0
     end
 end
