@@ -24,11 +24,11 @@ class BrokenImages < Check
             $d.debug "testing for broken image: #{uri} -> #{status}"
 
             if ['read_timeout', 'socket_error'].include? status
-                results << {type: Check::WARNING, message: "Broken image: #{uri} (connection error)"}
+                results << {type: Check::ERROR, message: "Broken image: #{uri} (connection error)"}
             elsif status == 'unknown'
-                results << {type: Check::WARNING, message: "Broken image: #{uri} (unknown error)"}
+                results << {type: Check::ERROR, message: "Broken image: #{uri} (unknown error)"}
             elsif status.to_i >= 400
-                results << {type: Check::WARNING, message: "Broken image: #{uri} (HTTP #{status})"}
+                results << {type: Check::ERROR, message: "Broken image: #{uri} (HTTP #{status})"}
             end
         end
         results
