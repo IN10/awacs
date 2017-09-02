@@ -15,7 +15,7 @@ class BrokenImages < Check
     def check page
         html = Nokogiri::HTML page
 
-        urls = html.xpath('//img[@src]').map { |a| a.attr :src }
+        urls = html.xpath('//img').map { |a| a.attr :src }
         urls.map! { |u| Addressable::URI.join(@arguments.scope, u).normalize }
 
         results = []
