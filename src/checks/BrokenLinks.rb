@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'addressable'
 require_relative 'Check.rb'
+require_relative 'URLTester.rb'
 
 # Check for broken links in all downloaded pages
 #
@@ -13,22 +14,19 @@ class BrokenLinks < Check
     def initialize arguments
         super arguments
         @slow = true
-        @cache = {}
+        @tester = URLTester.new
     end
 
     def check page
         html = Nokogiri::HTML page
+
         urls = html.xpath('//a[@href]').map { |a| a.attr :href }
-        results = []
-
-        # Ignore URLs that are not conventionally "followable" by a browser
         urls.reject! { |u| u.start_with?('tel:') || u.start_with?('mailto:') || u.start_with?('#') }
-
-        # Construct to full URLs
         urls.map! { |u| Addressable::URI.join(@arguments.scope, u).normalize }
 
+        results = []
         urls.each do |uri|
-            status = status? uri
+            status = @tester.status? uri
             $d.debug "testing for broken link: #{uri} -> #{status}"
             if status == 'read_timeout'
                 results << {type: Check::WARNING, message: "Broken link: #{uri} (connection timeout)"}
@@ -41,35 +39,5 @@ class BrokenLinks < Check
             end
         end
         results
-    end
-
-    private
-
-    # Get a cached or fresh response status
-    def status? uri
-        downloadStatus(uri) unless @cache.include? uri
-        @cache[uri]
-    end
-
-    # Download the URI to get its http response status code
-    def downloadStatus uri
-        options = {read_timeout: 2}
-        # Add HTTP Basic Authentication if required
-        if @arguments.username && @arguments.password && @arguments.scope.include?(uri.host)
-            options[:http_basic_authentication] = [@arguments.username, @arguments.password]
-        end
-
-        # Get the page
-        begin
-            open(uri, options) { |response| @cache[uri] = response.status[0] }
-        rescue OpenURI::HTTPError => error
-            @cache[uri] = error.io.status[0]
-        rescue Net::ReadTimeout
-            @cache[uri] = 'read_timeout'
-        rescue SocketError
-            @cache[uri] = 'socket_error'
-        rescue
-            @cache[uri] = 'unknown'
-        end
     end
 end
