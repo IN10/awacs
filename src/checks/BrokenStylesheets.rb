@@ -8,7 +8,7 @@ class BrokenStylesheets < Check
 
     def initialize arguments
         super arguments
-        @slow = true
+        @slow = false
         @tester = URLTester.new
     end
 
