@@ -4,11 +4,6 @@ require 'addressable'
 require_relative 'Check.rb'
 require_relative 'URLTester.rb'
 
-# Check for broken links in all downloaded pages
-#
-# These are *NOT* the request failures in LogAnalyzer, which only reports failures
-# for pages it actually downloads, i.e. that are in scope. This checks all <a>
-# tags on a page regardless of where they lead.
 class BrokenImages < Check
 
     def initialize arguments
