@@ -22,9 +22,8 @@ class BrokenImages < Check
         urls.each do |uri|
             status = @tester.status? uri
             $d.debug "testing for broken image: #{uri} -> #{status}"
-            if status == 'read_timeout'
-                results << {type: Check::WARNING, message: "Broken image: #{uri} (connection timeout)"}
-            elsif status == 'socket_error'
+
+            if ['read_timeout', 'socket_error'].include? status
                 results << {type: Check::WARNING, message: "Broken image: #{uri} (connection error)"}
             elsif status == 'unknown'
                 results << {type: Check::WARNING, message: "Broken image: #{uri} (unknown error)"}
