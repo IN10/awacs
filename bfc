@@ -61,6 +61,7 @@ checks = [
     BrokenImages.new(args),
     BrokenStylesheets.new(args),
     BrokenScripts.new(args),
+    InvalidHTML.new(args),
 ]
 # Skip all checks marked as slow when --fast is given
 checks.reject!(&:slow) if args.hasAny? '--fast'

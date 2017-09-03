@@ -56,6 +56,7 @@ is run with the --fast option.
 | Scripts | fast | Check \<script\> tags with src attributes for broken references  |
 | Stylesheets | fast | Check \<link\> tags with href attributes for broken references  |
 | LogAnalyzer | fast | Check the log of downloaded pages for failures. This catches problems with pages on your site  |
+| InvalidHTML | fast | Check for parsing errors in HTML |
 
 ### Known problems
 Linking to any Linkedin-profile generally results in a 999 HTTP status code
