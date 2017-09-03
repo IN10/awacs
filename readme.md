@@ -52,12 +52,12 @@ is run with the --fast option.
 
 | Checker | Speed | Purpose |
 | ------- | ----- | ------- |
-| LogAnalyzer | fast | Check the log of downloaded pages for failures. This catches problems with pages on your site  |
-| Broken images | slow | Check \<img\> tags for broken src attributes |
-| Broken links | slow | Check \<a\> tags for broken href attributes. Used in addition to LogAnlyzer, this catches problems with external links too. See known problems below. |
-| Broken scripts | fast | Check \<script\> tags with src attributes for broken references  |
-| Broken stylesheets | fast | Check \<link\> tags with href attributes for broken references  |
 | Error output | fast | Check the page for keywords such as "error", "exception" and "warning" that often indicate server-side problems  |
+| Images | slow | Check \<img\> tags for broken src attributes |
+| Links | slow | Check \<a\> tags for broken href attributes. Used in addition to LogAnlyzer, this catches problems with external links too. See known problems below. |
+| Scripts | fast | Check \<script\> tags with src attributes for broken references  |
+| Stylesheets | fast | Check \<link\> tags with href attributes for broken references  |
+| LogAnalyzer | fast | Check the log of downloaded pages for failures. This catches problems with pages on your site  |
 
 ### Known problems
 Linking to any Linkedin-profile generally results in a 999 HTTP status code
