@@ -6,6 +6,16 @@ this program provides early warnings for potential problems in your website. It
 doesn't provide a complete overview, but detects signals that you may want to
 investigate further.
 
+## Contents
+- [AWACS](#awacs)
+  * [Installation](#installation)
+  * [Usage](#usage)
+    + [Checks](#checks)
+    + [Known problems](#known-problems)
+    + [Exit codes](#exit-codes)
+  * [Technology](#technology)
+  * [Development](#development)
+
 ## Installation
 This tool is a Ruby-application that you run from the command-line. You can
 customize the installation depending on your needs, but the following process
