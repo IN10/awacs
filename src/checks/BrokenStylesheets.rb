@@ -4,6 +4,8 @@ require 'addressable'
 require_relative 'Check.rb'
 require_relative 'URLTester.rb'
 
+# Check that all <script> with a src-attribute
+# return a valid response code.
 class BrokenStylesheets < Check
 
     def initialize arguments

@@ -4,6 +4,7 @@ require 'addressable'
 require_relative 'Check.rb'
 require_relative 'URLTester.rb'
 
+# Check that all image tags on the page return a valid response code
 class BrokenImages < Check
 
     def initialize arguments
