@@ -10,14 +10,12 @@ is usually the fastest way to get started:
 1. Use homebrew to install a recent version of [Ruby](https://www.ruby-lang.org/en/)
 and [wget](https://www.gnu.org/software/wget/) by running `brew install ruby`
 and `brew install wget`.
+1. Install bundler (the Ruby package manager) by running `gem install bundler`.
 1. Clone this repository to a convenient location on your PC. I use
 `/Users/{name}/tools/bfc` on my PC.
 1. Add the location to your PATH.
-1. Install bundler (the Ruby package manager) by running `gem install bundler`.
-1. Install the dependencies by running `bundle install` in the installed directory.
-1. Verify your installation by running `bfc -v` or `bfc -h` in any terminal on
-your device. If this returns no error, your installation has succeeded.
-
+1. Install the dependencies by running `bundle install`.
+1. Verify your installation by running `bfc -v` or `bfc -h`.
 ## Usage
 ```bash
 bfc [url] [options]
