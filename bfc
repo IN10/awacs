@@ -55,13 +55,14 @@ $d = Debugger.new debugMode
 results = Results.new
 
 # Define checks to run
-# Skip all checks marked as slow when --fast is given
 checks = [
     PrintsErrors.new(args),
     BrokenLinks.new(args),
     BrokenImages.new(args),
     BrokenStylesheets.new(args),
+    BrokenScripts.new(args),
 ]
+# Skip all checks marked as slow when --fast is given
 checks.reject!(&:slow) if args.hasAny? '--fast'
 
 # Create a temporary directory for us to use
