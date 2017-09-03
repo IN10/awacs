@@ -76,8 +76,8 @@ is run with the --fast option.
 
 ### Known problems
 Linking to any Linkedin-profile generally results in a 999 HTTP status code
-due to automated bot detection. This program ignores robot.txt files, but generally
-makes no attempt to appear as a legitimate user.
+due to automated bot detection. This program ignores the robots.txt file on your
+own website, but makes no attempt to appear as a legitimate user.
 
 ### Exit codes
 The program returns an appropriate exit code based on its results:
