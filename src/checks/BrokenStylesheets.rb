@@ -15,11 +15,11 @@ class BrokenStylesheets < Check
         html = Nokogiri::HTML page
         results = []
 
-        urls = html.xpath('//link[@rel="stylesheet"]').map { |l| l.attr :src }
+        urls = html.xpath('//link[@rel="stylesheet"]').map { |l| l.attr :href }
 
         urls.reject{|u| !u.nil? }.each do |url|
-            $d.debug "testing for broken stylesheet: got <link> without src attribute"
-            results << {type: Check::ERROR, message: "Broken stylesheet: tag has no src attribute"}
+            $d.debug "testing for broken stylesheet: got <link> without href attribute"
+            results << {type: Check::ERROR, message: "Broken stylesheet: tag has no href attribute"}
         end
         urls.reject! {|u| u.nil?}
         urls.map! { |u| Addressable::URI.join(@arguments.scope, u).normalize }
