@@ -21,6 +21,7 @@ and `brew install wget`.
 1. Add the location to your PATH.
 1. Install the dependencies by running `bundle install`.
 1. Verify your installation by running `awacs -v` or `awacs -h`.
+
 ## Usage
 ```bash
 awacs [url] [options]
