@@ -46,12 +46,25 @@ Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1
 (invalid parameters given), and the program will not continue.
 
-## Known problems
+### Checks
+BFC executes the following tests on every run. Slow tests are skipped when bfc
+is run with the --fast option.
+
+| Checker | Speed | Purpose |
+| ------- | ----- | ------- |
+| LogAnalyzer | fast | Check the log of downloaded pages for failures. This catches problems with pages on your site  |
+| Broken images | slow | Check \<img\> tags for broken src attributes |
+| Broken links | slow | Check \<a\> tags for broken href attributes. Used in addition to LogAnlyzer, this catches problems with external links too. See known problems below. |
+| Broken scripts | fast | Check \<script\> tags with src attributes for broken references  |
+| Broken stylesheets | fast | Check \<link\> tags with href attributes for broken references  |
+| Error output | fast | Check the page for keywords such as "error", "exception" and "warning" that often indicate server-side problems  |
+
+### Known problems
 1. Linking to any Linkedin-profile generally results in a 999 HTTP status code
 due to automated bot detection. This program ignores robot.txt files, but generally
 makes no attempt to appear as a legitimate user.
 
-## Exit codes
+### Exit codes
 The program returns an appropriate exit code based on its results:
 
 | Code | Situation |
