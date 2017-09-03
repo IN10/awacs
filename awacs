@@ -13,7 +13,7 @@ silent = args.hasAny? '--silent'
 debugMode = args.hasAny? '--debug'
 
 if args.hasAny? '--version', '-v'
-    puts "bfc version 1.0.0\n" unless silent
+    puts "awacs version 1.0.0\n" unless silent
     exit 0
 end
 

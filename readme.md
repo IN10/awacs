@@ -1,5 +1,10 @@
-# Basic Fault Checker (BFC)
+# AWACS
 > Crawl through a domain and check every page for errors
+
+Named after the [Airborne Warning and Control System](https://en.wikipedia.org/wiki/Boeing_E-3_Sentry),
+this program provides early warnings for potential problems in your website. It
+doesn't provide a complete overview, but detects signals that you may want to
+investigate further.
 
 ## Installation
 This tool is a Ruby-application that you run from the command-line. You can
@@ -12,13 +17,13 @@ and [wget](https://www.gnu.org/software/wget/) by running `brew install ruby`
 and `brew install wget`.
 1. Install bundler (the Ruby package manager) by running `gem install bundler`.
 1. Clone this repository to a convenient location on your PC. I use
-`/Users/{name}/tools/bfc` on my PC.
+`/Users/{name}/tools/awacs` on my PC.
 1. Add the location to your PATH.
 1. Install the dependencies by running `bundle install`.
-1. Verify your installation by running `bfc -v` or `bfc -h`.
+1. Verify your installation by running `awacs -v` or `awacs -h`.
 ## Usage
 ```bash
-bfc [url] [options]
+awacs [url] [options]
 ```
 
 `url` should be the base URL of the website you're going to test, e.g. [http://www.website.com](http://www.website.com). This URL acts as a scope. For
@@ -45,7 +50,7 @@ print an error message (because the program is silent). The exit code will be 1
 (invalid parameters given), and the program will not continue.
 
 ### Checks
-BFC executes the following tests on every run. Slow tests are skipped when bfc
+awacs executes the following tests on every run. Slow tests are skipped when awacs
 is run with the --fast option.
 
 | Checker | Speed | Purpose |

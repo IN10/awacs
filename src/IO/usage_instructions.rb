@@ -1,7 +1,7 @@
 def usage_instructions
-    puts "Basic Fault Checker (BFC) version 1.0.0"
+    puts "awacs version 1.0.0"
     puts "Crawl through a domain and check every page for errors"
-    puts "Usage: bfc [scope] [options]"
+    puts "Usage: awacs [scope] [options]"
     puts "Scope should be a website directory, e.g. https://www.in10.nl/nieuws"
     puts "Options:"
     puts "--errors-only    Do not show warnings in the results"
