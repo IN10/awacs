@@ -2,8 +2,21 @@
 > Crawl through a domain and check every page for errors
 
 ## Installation
-1. Install Ruby and wget.
-1. Install the dependencies by running `bundle install`.
+This tool is a Ruby-application that you run from the command-line. You can
+customize the installation depending on your needs, but the following process
+is usually the fastest way to get started:
+
+1. Install [homebrew](https://brew.sh/) if you are not using it already.
+1. Use homebrew to install a recent version of [Ruby](https://www.ruby-lang.org/en/)
+and [wget](https://www.gnu.org/software/wget/) by running `brew install ruby`
+and `brew install wget`.
+1. Clone this repository to a convenient location on your PC. I use
+`/Users/{name}/tools/bfc` on my PC.
+1. Add the location in which you've installed to your PATH.
+1. Install bundler (the Ruby package manager) by running `gem install bundler`.
+1. Install the dependencies by running `bundle install` in the installed directory.
+1. Verify your installation by running `bfc -v` or `bfc -h` in any terminal on
+your device. If this returns no error, your installation has succeeded.
 
 ## Usage
 ```bash
