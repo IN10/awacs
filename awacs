@@ -13,6 +13,7 @@ require_relative 'src/checks/Check'
 require_relative 'src/checks/InvalidHTML'
 require_relative 'src/checks/LogAnalyzer'
 require_relative 'src/checks/PrintsErrors'
+require_relative 'src/checks/PrintsLorem'
 require_relative 'src/checks/URLTester'
 require_relative 'src/IO/Arguments'
 require_relative 'src/IO/Debugger'
@@ -70,6 +71,7 @@ results = Results.new
 # Define checks to run
 checks = [
     PrintsErrors.new(args),
+    PrintsLorem.new(args),
     BrokenLinks.new(args),
     BrokenImages.new(args),
     BrokenStylesheets.new(args),
