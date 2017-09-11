@@ -98,3 +98,6 @@ links on every page.
 
 ## Development
 [Jakob Buis](http://www.jakobbuis.nl)
+
+## License
+Copyright 2017 IN10. This project is distributed under the MIT-license. It is subject to the license terms in the LICENSE file found in the top-level directory of this distribution and at [https://opensource.org/licenses/MIT](https://opensource.org/licenses/MIT). No part of AWACS, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the LICENSE file.
