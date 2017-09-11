@@ -45,17 +45,17 @@ be included.
 
 Valid `options` are:
 
-| Option | Effect |
-| ------ | ------ |
-| --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
-| --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
-| --silent | Suppress all output, returning only an exit code |
-| --debug | Verbose action output, no visual effects |
-| --fast | Will skip all checks marked as slow |
-| --username | HTTP Basic Authentication username |
-| --password | HTTP Basic Authentication password |
-| -h, --help | Print usage instructions |
-| -v, --version | Print version number |
+| Short | Long | Effect |
+| ----- | ---- | ------ |
+| -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
+| -w | --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
+| -s | --silent | Suppress all output, returning only an exit code |
+| -d | --debug | Verbose action output, no visual effects |
+| -f | --fast | Will skip all checks marked as slow |
+| -u | --username | HTTP Basic Authentication username |
+| -p | --password | HTTP Basic Authentication password |
+| -h | --help | Print usage instructions |
+| -v | --version | Print version number |
 
 Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1

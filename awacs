@@ -23,8 +23,8 @@ require_relative 'src/IO/usage_instructions'
 # Parse command line arguments
 args = Arguments.new(ARGV)
 scope = args.scope
-silent = args.hasAny? '--silent'
-debugMode = args.hasAny? '--debug'
+silent = args.hasAny? '--silent', '-s'
+debugMode = args.hasAny? '--debug', '-d'
 
 if args.hasAny? '--version', '-v'
     puts "awacs version 1.0.0\n" unless silent
@@ -79,7 +79,7 @@ checks = [
     InvalidHTML.new(args),
 ]
 # Skip all checks marked as slow when --fast is given
-checks.reject!(&:slow) if args.hasAny? '--fast'
+checks.reject!(&:slow) if args.hasAny? '--fast', '-f'
 
 # Create a temporary directory for us to use
 spinner.update operation: 'Creating temporary directory' if fancyUI
@@ -89,7 +89,7 @@ Dir.mktmpdir do |directory|
 
     # Setup authentication if required
     auth = ""
-    if args.hasAny? '--username', '--password'
+    if args.hasAny? '--username', '--password', '-u', '-p'
         auth = "--auth-no-challenge --user=#{args.username} --password=#{args.password}"
     end
 
@@ -128,7 +128,7 @@ if fancyUI
     spinner.success
     spinner.update operation: 'Filtering results'
 
-    formatter = Formatter.new results, args.hasAny?('--errors'), args.hasAny?('--warnings')
+    formatter = Formatter.new results, args.hasAny?('--errors', '-e'), args.hasAny?('--warnings', '-w')
     puts formatter.render
 end
 
