@@ -49,8 +49,8 @@ Valid `options` are:
 | ----- | ---- | ------ |
 | -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
 | -w | --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
-| -s | --silent | Suppress all output, returning only an exit code |
-| -d | --debug | Verbose action output, no visual effects |
+| -s | --silent | Suppress all output, returning only an exit code. Cannot be combined with --debug. |
+| -d | --debug | Verbose action output, no visual effects. Cannot be combined with --silent. |
 | -f | --fast | Will skip all checks marked as slow |
 | -u | --username | HTTP Basic Authentication username |
 | -p | --password | HTTP Basic Authentication password |
