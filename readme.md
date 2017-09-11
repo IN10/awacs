@@ -69,10 +69,10 @@ is run with the --fast option.
 | Images | slow | Check \<img\> tags for broken src attributes |
 | Invalid HTML | fast | Check for parsing errors in HTML |
 | Links | slow | Check \<a\> tags for broken href attributes. |
-| Page failures | fast | Check the log of downloaded pages for failures. This catches problems with pages on your site  |
+| Page failures | fast | Check the log of downloaded pages for failures.|
 | Scripts | fast | Check \<script\> tags with src attributes for broken references  |
 | Stylesheets | fast | Check \<link\> tags with href attributes for broken references  |
-| Trigger words | fast | Check the page for keywords such as "error", "exception" and "warning" that often indicate server-side problems  |
+| Trigger words | fast | Check the page for keywords such as "error" and "exception" that often indicate server-side problems  |
 | Dummy content | fast | Check the page for keywords that indicate dummy text such as "lorem ipsum"  |
 
 ### Known problems
