@@ -5,21 +5,22 @@ require_relative 'Check.rb'
 class PrintsErrors < Check
 
     def check page
+        contents = page.downcase
         results = []
 
-        if page.include? 'warning'
+        if contents.include? 'warning'
             $d.debug "found 'warning' on page"
             results << {type: Check::WARNING, message: "Page contains 'warning'"}
         end
 
-        if page.include? 'error'
+        if contents.include? 'error'
             $d.debug "found 'error' on page"
             results << {type: Check::WARNING, message: "Page contains 'error'"}
         end
 
-        if page.include? 'Exception'
-            $d.debug "found 'Exception' on page"
-            results << {type: Check::ERROR, message: "Page contains 'Exception'"}
+        if contents.include? 'exception'
+            $d.debug "found 'exception' on page"
+            results << {type: Check::ERROR, message: "Page contains 'exception'"}
         end
 
         results
