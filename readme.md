@@ -57,11 +57,11 @@ Valid `options` are:
 | -h | --help | Print usage instructions |
 | -v | --version | Print version number |
 
-Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
+`--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1
 (invalid parameters given), and the program will not continue.
 
-Note: --errors and --warnings can be combined to show both pages that have errors
+`--errors` and `--warnings` can be combined to show both pages that have errors
 and pages that have warnings. If both options are *not* passed, the default is to
 list every page. Passing these options does not affect the [exit codes](#exit-codes).
 
