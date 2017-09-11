@@ -73,6 +73,7 @@ is run with the --fast option.
 | Scripts | fast | Check \<script\> tags with src attributes for broken references  |
 | Stylesheets | fast | Check \<link\> tags with href attributes for broken references  |
 | Trigger words | fast | Check the page for keywords such as "error", "exception" and "warning" that often indicate server-side problems  |
+| Dummy content | fast | Check the page for keywords that indicate dummy text such as "lorem ipsum"  |
 
 ### Known problems
 Linking to any Linkedin-profile generally results in a 999 HTTP status code
