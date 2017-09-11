@@ -47,15 +47,15 @@ Valid `options` are:
 
 | Short | Long | Effect |
 | ----- | ---- | ------ |
-| -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
-| -w | --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
-| -s | --silent | Suppress all output, returning only an exit code. Cannot be combined with --debug. |
 | -d | --debug | Verbose action output, no visual effects. Cannot be combined with --silent. |
+| -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
 | -f | --fast | Will skip all checks marked as slow |
-| -u | --username | HTTP Basic Authentication username |
-| -p | --password | HTTP Basic Authentication password |
 | -h | --help | Print usage instructions |
+| -p | --password | HTTP Basic Authentication password |
+| -s | --silent | Suppress all output, returning only an exit code. Cannot be combined with --debug. |
+| -u | --username | HTTP Basic Authentication username |
 | -v | --version | Print version number |
+| -w | --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
 
 `--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1
