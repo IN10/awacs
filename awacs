@@ -4,7 +4,20 @@ require 'rubygems'
 require 'tty-spinner'
 require 'tmpdir'
 
-Dir["./src/**/*.rb"].each {|file| require file }
+require_relative 'src/Results'
+require_relative 'src/checks/BrokenImages'
+require_relative 'src/checks/BrokenLinks'
+require_relative 'src/checks/BrokenScripts'
+require_relative 'src/checks/BrokenStylesheets'
+require_relative 'src/checks/Check'
+require_relative 'src/checks/InvalidHTML'
+require_relative 'src/checks/LogAnalyzer'
+require_relative 'src/checks/PrintsErrors'
+require_relative 'src/checks/URLTester'
+require_relative 'src/IO/Arguments'
+require_relative 'src/IO/Debugger'
+require_relative 'src/IO/Formatter'
+require_relative 'src/IO/usage_instructions'
 
 # Parse command line arguments
 args = Arguments.new(ARGV)
