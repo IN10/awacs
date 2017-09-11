@@ -128,7 +128,7 @@ if fancyUI
     spinner.success
     spinner.update operation: 'Filtering results'
 
-    formatter = Formatter.new results, args.hasAny?('--errors-only')
+    formatter = Formatter.new results, args.hasAny?('--errors'), args.hasAny?('--warnings')
     puts formatter.render
 end
 

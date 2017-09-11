@@ -5,9 +5,10 @@ require_relative '../checks/Check.rb'
 # Format results into a pretty table
 class Formatter
 
-    def initialize results, errorsOnly
+    def initialize results, showErrors, showWarnings
         @results = results
-        @errorsOnly = errorsOnly
+        @showErrors = showErrors
+        @showWarnings = showWarnings
     end
 
     def render
@@ -17,7 +18,15 @@ class Formatter
             table = TTY::Table.new ['Path', 'Results'], data
             return "Results\n" + table.render(:ascii, multiline: true)
         else
-            return "No pages contained errors and/or warnings"
+            if @showErrors && @showWarnings
+                return "No pages contained errors and/or warnings"
+            elsif @showErrors
+                return "No pages contained errors"
+            elsif @showWarnings
+                return "No pages contained warnings"
+            else
+                return "No pages in website"
+            end
         end
     end
 
@@ -27,7 +36,7 @@ class Formatter
         data = []
         @results.all.each do |url, results|
             entries = results.flatten(1)
-            next if @errorsOnly && entries.count == 0
+            next if shouldSkip?(entries)
             data << [url, formatResults(entries)]
         end
         data.sort! { |a,b| a[0] <=> b[0] }
@@ -45,6 +54,14 @@ class Formatter
                 Pastel.new.green(result[:message])
             end
         end.join("\n")
+    end
+
+    # Determine whether we should skip printing this result, based on flags passed
+    def shouldSkip? entries
+        return false if @showErrors && @showWarnings && !entries.empty?
+        return true if @showErrors && entries.reject{ |r| r[:type] != Check::ERROR }.empty?
+        return true if @showWarnings && entries.reject{ |r| r[:type] != Check::WARNING }.empty?
+        false
     end
 end
 

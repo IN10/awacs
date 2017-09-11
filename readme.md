@@ -47,7 +47,8 @@ Valid `options` are:
 
 | Option | Effect |
 | ------ | ------ |
-| --errors-only | Only show pages with errors in the final output |
+| --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
+| --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
 | --silent | Suppress all output, returning only an exit code |
 | --debug | Verbose action output, no visual effects |
 | --fast | Will skip all checks marked as slow |
@@ -59,6 +60,10 @@ Valid `options` are:
 Note: `--debug` and `--silent` cannot be combined, but passing both will **not**
 print an error message (because the program is silent). The exit code will be 1
 (invalid parameters given), and the program will not continue.
+
+Note: --errors and --warnings can be combined to show both pages that have errors
+and pages that have warnings. If both options are *not* passed, the default is to
+list every page. Passing these options does not affect the [exit codes](#exit-codes).
 
 ### Checks
 awacs executes the following tests on every run. Slow tests are skipped when awacs

@@ -4,7 +4,8 @@ class Arguments
     def initialize argv
         @argv = argv
         @known_options = [
-            '--errors-only',
+            '--errors',
+            '--warnings',
             '--silent',
             '--debug',
             '--help',
