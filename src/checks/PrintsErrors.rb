@@ -5,7 +5,7 @@ require_relative 'Check.rb'
 class PrintsErrors < Check
 
     def check page
-        contents = page.downcase
+        contents = page.downcase :ascii
         results = []
 
         if contents.include? 'warning'

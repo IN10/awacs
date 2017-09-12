@@ -4,7 +4,7 @@ require_relative 'Check.rb'
 class PrintsLorem < Check
 
     def check page
-        contents = page.downcase
+        contents = page.downcase :ascii
         if contents.include?('lorem') || contents.include?('ipsum')
             $d.debug "found 'lorem' or 'ipsum' on page"
             return [{type: Check::ERROR, message: "Page contains dummy content"}]
