@@ -10,9 +10,9 @@ class Arguments
             '-d', '--debug',
             '-h', '--help',
             '-v', '--version',
-            '-u', '--username',
-            '-p', '--password',
             '-f', '--fast',
+            '--username',
+            '--password',
         ]
     end
 

@@ -51,9 +51,9 @@ Valid `options` are:
 | -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
 | -f | --fast | Will skip all checks marked as slow |
 | -h | --help | Print usage instructions |
-| -p | --password | HTTP Basic Authentication password |
+|    | --password | HTTP Basic Authentication password |
 | -s | --silent | Suppress all output, returning only an exit code. Cannot be combined with --debug. |
-| -u | --username | HTTP Basic Authentication username |
+|    | --username | HTTP Basic Authentication username |
 | -v | --version | Print version number |
 | -w | --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
 

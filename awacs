@@ -89,7 +89,7 @@ Dir.mktmpdir do |directory|
 
     # Setup authentication if required
     auth = ""
-    if args.hasAny? '--username', '--password', '-u', '-p'
+    if args.hasAny? '--username', '--password'
         auth = "--auth-no-challenge --user=#{args.username} --password=#{args.password}"
     end
 
