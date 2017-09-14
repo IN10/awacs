@@ -14,7 +14,7 @@ class BrokenLinks < Check
     def initialize arguments
         super arguments
         @slow = true
-        @tester = URLTester.new
+        @tester = URLTester.new arguments.username, arguments.password
     end
 
     def check page

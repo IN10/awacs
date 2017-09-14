@@ -10,7 +10,7 @@ class BrokenStylesheets < Check
 
     def initialize arguments
         super arguments
-        @tester = URLTester.new
+        @tester = URLTester.new arguments.username, arguments.password
     end
 
     def check page

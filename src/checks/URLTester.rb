@@ -18,10 +18,7 @@ class URLTester
 
     def fetchStatus uri
         options = {read_timeout: 2}
-        # Add HTTP Basic Authentication if required
-        if @username || @password
-            options[:http_basic_authentication] = [@arguments.username, @arguments.password]
-        end
+        options[:http_basic_authentication] = [@username, @password] if @username || @password
 
         # Get the page
         begin
