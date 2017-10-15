@@ -18,6 +18,7 @@ require_relative 'src/checks/URLTester'
 require_relative 'src/IO/Arguments'
 require_relative 'src/IO/Debugger'
 require_relative 'src/IO/Formatter'
+require_relative 'src/IO/UrlLookup'
 require_relative 'src/IO/usage_instructions'
 
 # Parse command line arguments
@@ -84,6 +85,7 @@ checks.reject!(&:slow) if args.hasAny? '--fast', '-f'
 # Create a temporary directory for us to use
 spinner.update operation: 'Creating temporary directory' if fancyUI
 Dir.mktmpdir do |directory|
+
     $d.debug "Using temporary directory #{directory}"
     spinner.update operation: 'Downloading all pages of the website' if fancyUI
 
@@ -94,7 +96,7 @@ Dir.mktmpdir do |directory|
     end
 
     # Download the website with wget
-    wget = "(cd #{directory}; wget -r -np -nv --follow-tags=a --random-wait -erobots=off -nc -o wget.log #{auth} #{scope})"
+    wget = "(cd #{directory}; wget -r -np -nd -nv --follow-tags=a --random-wait -erobots=off -nc -o wget.log #{auth} #{scope})"
     $d.debug "Downloading pages using wget: #{wget}"
     `#{wget}`
 
@@ -103,17 +105,19 @@ Dir.mktmpdir do |directory|
     logFile = "#{directory}/wget.log"
     analyzer = LogAnalyzer.new logFile, results
     analyzer.analyze
-    File.delete logFile
+
+    spinner.update operation: 'Checking for problems in downloaded pages' if fancyUI
+    lookup = UrlLookup.new(File.open(directory+'/wget.log').read)
 
     # Iterate over all downloaded files
-    spinner.update operation: 'Checking for problems in downloaded pages' if fancyUI
-    files = Dir.glob("#{directory}/**/*").select {|f| !File.directory? f}
+    files = Dir.glob("#{directory}/*").select { |f| !f.end_with? 'wget.log' }
     pages = files.map do |path|
+        # Read the file
         $d.debug "processing #{path}"
-        # # Read the file, feed it to all checkers
         contents = File.open(path, "r").read
-        url = path.sub directory+"/", ""
+        url = lookup.original_url_for path
 
+        # Feed it to each checker
         output = results.addPage url
         checks.each do |checker|
             output << checker.check(contents)
