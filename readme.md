@@ -65,7 +65,9 @@ Valid `options` are:
 ### Output formats
 The `--output` parameter determines what the program prints to stdout. You can choose from:
 * human: displays a progress spinner, and formats a nice, readable ASCII-table of results
-* csv: output comma-separated results, ready for import in Excel, etc.
+* csv: output comma-separated results, ready for import in Excel, etc. Note that the data will be
+printed to stdout. You probably want to redirect it to a file like so:
+`$ awacs http://www.jakobbuis.nl --output-csv > results.csv`.
 * debug: output verbose statements what AWACS is doing
 * silent: output nothing (not even errors). The [exit codes](#exit-codes) can be
  used to determine the result of analysis.
