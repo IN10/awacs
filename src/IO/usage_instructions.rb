@@ -1,5 +1,5 @@
 def usage_instructions
-    puts "awacs version 1.0.0"
+    puts "awacs version 2.0.0"
     puts "Crawl through a domain and check every page for errors"
     puts "Usage: awacs [scope] [options]"
     puts "Scope should be a website directory, e.g. https://www.in10.nl/nieuws"

@@ -35,7 +35,7 @@ if !['human', 'csv', 'silent', 'debug'].include? output
 end
 
 if args.hasAny? '--version', '-v'
-    puts "awacs version 1.0.0\n" unless output == 'silent'
+    puts "awacs version 2.0.0\n" unless output == 'silent'
     exit 0
 end
 
