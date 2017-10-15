@@ -83,7 +83,6 @@ checks = [
 checks.reject!(&:slow) if args.hasAny? '--fast', '-f'
 
 # Create a temporary directory for us to use
-spinner.update operation: 'Creating temporary directory' if fancyUI
 Dir.mktmpdir do |directory|
 
     $d.debug "Using temporary directory #{directory}"
