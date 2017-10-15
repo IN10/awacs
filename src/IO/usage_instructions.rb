@@ -15,6 +15,9 @@ def usage_instructions
     puts "  --username        HTTP Basic Authentication username"
     puts "  --password        HTTP Basic Authentication password"
     puts ""
+    puts "  --folder          Output all downloaded pages to a directory,"
+    puts "                    allowing for manual inspection"
+    puts ""
     puts "  -h, --help        These usage instructions"
     puts "  -v, --version     Version number"
 end

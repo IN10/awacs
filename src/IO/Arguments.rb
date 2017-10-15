@@ -13,6 +13,7 @@ class Arguments
             '-f', '--fast',
             '--username',
             '--password',
+            '--folder',
         ]
     end
 
@@ -28,6 +29,10 @@ class Arguments
 
     def password
         get '--password'
+    end
+
+    def folder
+        get '--folder'
     end
 
     def hasAny? *keys

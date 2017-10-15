@@ -82,10 +82,30 @@ checks = [
 # Skip all checks marked as slow when --fast is given
 checks.reject!(&:slow) if args.hasAny? '--fast', '-f'
 
-# Create a temporary directory for us to use
-Dir.mktmpdir do |directory|
+# If needed, create a temporary directory for us to use
+if args.hasAny? '--folder'
+    directory = args.folder
+    clean_up_directory = false
 
-    $d.debug "Using temporary directory #{directory}"
+    # Sanity checks: folder exists, is writeable
+    if !File.writable?(directory)
+        puts "Error: the selected output folder (--folder) does not exist, or is not writeable"
+        exit 4
+    end
+
+    # Sanity check: folder is initially empty
+    if !Dir["#{directory}/*"].empty?
+        puts "Error: the selected output folder (--folder) is not empty"
+        exit 5
+    end
+else
+    directory = Dir.mktmpdir
+    clean_up_directory = true
+end
+
+# Main process
+begin
+    $d.debug "Using directory #{directory}"
     spinner.update operation: 'Downloading all pages of the website' if fancyUI
 
     # Setup authentication if required
@@ -123,6 +143,9 @@ Dir.mktmpdir do |directory|
         end
         $d.debug "#{output.flatten(1).count} errors/warnings"
     end
+ensure
+    # Clean up the temp directory
+    FileUtils.remove_entry(directory) if clean_up_directory
 end
 
 # Format results

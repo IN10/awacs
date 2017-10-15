@@ -51,6 +51,7 @@ Valid `options` are:
 | -d | --debug | Verbose action output, no visual effects. Cannot be combined with --silent. |
 | -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
 | -f | --fast | Will skip all checks marked as slow |
+|    | --folder | Dump all tested pages to this folder, allowing for manual inspection |
 | -h | --help | Print usage instructions |
 |    | --password | HTTP Basic Authentication password |
 | -s | --silent | Suppress all output, returning only an exit code. Cannot be combined with --debug. |
@@ -95,6 +96,8 @@ The program returns an appropriate exit code based on its results:
 |    1 | Invalid parameters given |
 |    2 | Website triggered errors and/or warnings |
 |    3 | Website triggered warnings |
+|    4 | Selected folder (--folder) does not exist, or is not writeable |
+|    5 | Selected folder (--folder) is not empty |
 
 ## Technology
 Written in Ruby, this program uses wget to download all pages in scope. Files are
