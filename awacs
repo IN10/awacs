@@ -89,13 +89,13 @@ if args.hasAny? '--folder'
 
     # Sanity checks: folder exists, is writeable
     if !File.writable?(directory)
-        puts "Error: the selected output folder (--folder) does not exist, or is not writeable"
+        puts "Error: the selected output folder (--folder) does not exist, or is not writeable" unless silent
         exit 4
     end
 
     # Sanity check: folder is initially empty
     if !Dir["#{directory}/*"].empty?
-        puts "Error: the selected output folder (--folder) is not empty"
+        puts "Error: the selected output folder (--folder) is not empty" unless silent
         exit 5
     end
 else
