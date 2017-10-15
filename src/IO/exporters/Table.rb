@@ -13,7 +13,7 @@ class Table
         data = tableData
         return 'No pages' if data.count == 0
         table = TTY::Table.new ['Path', 'Results'], data
-        return "Results\n" + table.render(:ascii, multiline: true)
+        puts "Results\n" + table.render(:ascii, multiline: true)
     end
 
     private
