@@ -20,6 +20,7 @@ require_relative 'src/IO/Debugger'
 require_relative 'src/IO/UrlLookup'
 require_relative 'src/IO/usage_instructions'
 require_relative 'src/IO/exporters/Table'
+require_relative 'src/IO/exporters/CSVExporter'
 
 # Parse command line arguments
 args = Arguments.new(ARGV)
@@ -161,8 +162,9 @@ if output == 'human'
     spinner.success
     spinner.update operation: 'Filtering results'
 
-    table = Table.new results
-    puts table.render
+    Table.new(results).render
+elsif output == 'csv'
+    CSVExporter.new(results).render
 end
 
 # Exit with proper return code
