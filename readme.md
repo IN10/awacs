@@ -8,13 +8,17 @@ investigate further.
 
 ## Contents
 - [AWACS](#awacs)
+  * [Contents](#contents)
   * [Installation](#installation)
   * [Usage](#usage)
-    + [Checks](#checks)
-    + [Known problems](#known-problems)
+    + [Output formats](#output-formats)
+    + [Filtering results](#filtering-results)
     + [Exit codes](#exit-codes)
+  * [Checks](#checks)
+  * [Known problems](#known-problems)
   * [Technology](#technology)
   * [Development](#development)
+  * [License](#license)
 
 ## Installation
 This tool is a Ruby-application that you run from the command-line. You can
@@ -48,26 +52,49 @@ Valid `options` are:
 
 | Short | Long | Effect |
 | ----- | ---- | ------ |
-| -d | --debug | Verbose action output, no visual effects. Cannot be combined with --silent. |
 | -e | --errors | Only show pages with errors in the final output. Can be combined with --warnings. |
 | -f | --fast | Will skip all checks marked as slow |
 |    | --folder | Dump all tested pages to this folder, allowing for manual inspection |
 | -h | --help | Print usage instructions |
+|    | --output | Set the output format of results. Default is "human" |
 |    | --password | HTTP Basic Authentication password |
-| -s | --silent | Suppress all output, returning only an exit code. Cannot be combined with --debug. |
 |    | --username | HTTP Basic Authentication username |
 | -v | --version | Print version number |
 | -w | --warnings | Only show pages with warnings in the final output. Can be combined with --errors. |
 
-`--debug` and `--silent` cannot be combined, but passing both will **not**
-print an error message (because the program is silent). The exit code will be 1
-(invalid parameters given), and the program will not continue.
+### Output formats
+The `--output` parameter determines what the program prints to stdout. You can choose from:
+* human: displays a progress spinner, and formats a nice, readable ASCII-table of results
+* csv: output comma-separated results, ready for import in Excel, etc.
+* debug: output verbose statements what AWACS is doing
+* silent: output nothing (not even errors). The [exit codes](#exit-codes) can be
+ used to determine the result of analysis.
 
-`--errors` and `--warnings` can be combined to show both pages that have errors
-and pages that have warnings. If both options are *not* passed, the default is to
-list every page. Passing these options does not affect the [exit codes](#exit-codes).
+### Filtering results
+`--errors` and `--warnings` (or `-e` and `-w`) can be combined. If both options
+are *not* passed, the default is to list every page.
+Passing these options does not affect the [exit codes](#exit-codes).
 
-### Checks
+| Settings | Pages with no problems | Pages with errors | Pages with warnings |
+| -------- | ---------------------- | ----------------- | ------------------- |
+| _none given_ | &#10004; | &#10004; | &#10004; |
+| --errors --warnings | | &#10004; | &#10004; |
+| --errors    | | &#10004; | |
+| --warnings    | | | &#10004; |
+
+### Exit codes
+The program returns an appropriate exit code based on its results:
+
+| Code | Situation |
+| ---- | --------- |
+|    0 | No errors or warnings |
+|    1 | Invalid parameters given |
+|    2 | Website triggered errors and/or warnings |
+|    3 | Website triggered warnings |
+|    4 | Selected folder (--folder) does not exist, or is not writeable |
+|    5 | Selected folder (--folder) is not empty |
+
+## Checks
 awacs executes the following tests on every run. Slow tests are skipped when awacs
 is run with the --fast option.
 
@@ -82,22 +109,10 @@ is run with the --fast option.
 | Trigger words | fast | Check the page for keywords such as "error" and "exception" that often indicate server-side problems  |
 | Dummy content | fast | Check the page for keywords that indicate dummy text such as "lorem ipsum"  |
 
-### Known problems
+## Known problems
 Linking to any Linkedin-profile generally results in a 999 HTTP status code
 due to automated bot detection. This program ignores the robots.txt file on your
 own website, but makes no attempt to appear as a legitimate user.
-
-### Exit codes
-The program returns an appropriate exit code based on its results:
-
-| Code | Situation |
-| ---- | --------- |
-|    0 | No errors or warnings |
-|    1 | Invalid parameters given |
-|    2 | Website triggered errors and/or warnings |
-|    3 | Website triggered warnings |
-|    4 | Selected folder (--folder) does not exist, or is not writeable |
-|    5 | Selected folder (--folder) is not empty |
 
 ## Technology
 Written in Ruby, this program uses wget to download all pages in scope. Files are

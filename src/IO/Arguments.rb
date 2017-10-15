@@ -6,14 +6,13 @@ class Arguments
         @known_options = [
             '-e', '--errors',
             '-w', '--warnings',
-            '-s', '--silent',
-            '-d', '--debug',
             '-h', '--help',
             '-v', '--version',
             '-f', '--fast',
             '--username',
             '--password',
             '--folder',
+            '--output',
         ]
     end
 
@@ -24,15 +23,19 @@ class Arguments
     end
 
     def username
-        get '--username'
+        get_value '--username'
     end
 
     def password
-        get '--password'
+        get_value '--password'
     end
 
     def folder
-        get '--folder'
+        get_value '--folder'
+    end
+
+    def output
+        get_value '--output'
     end
 
     def hasAny? *keys
@@ -55,7 +58,7 @@ class Arguments
 
     private
 
-    def get key
+    def get_value key
         candidates = @argv.select {|arg| arg.start_with? key}
         return nil if candidates.count == 0
         candidate = candidates.first

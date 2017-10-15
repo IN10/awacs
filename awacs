@@ -24,47 +24,47 @@ require_relative 'src/IO/exporters/Table'
 # Parse command line arguments
 args = Arguments.new(ARGV)
 scope = args.scope
-silent = args.hasAny? '--silent', '-s'
-debugMode = args.hasAny? '--debug', '-d'
+
+# Determine output method
+output = 'human'
+output = args.output if args.hasAny? ('--output')
+if !['human', 'csv', 'silent', 'debug'].include? output
+    puts "Error: --output must be human, csv, silent or debug" unless output == 'silent'
+    exit 1
+end
 
 if args.hasAny? '--version', '-v'
-    puts "awacs version 1.0.0\n" unless silent
+    puts "awacs version 1.0.0\n" unless output == 'silent'
     exit 0
 end
 
 if args.hasAny? '--help', '-h'
-    usage_instructions unless silent
+    usage_instructions unless output == 'silent'
     exit 0
 end
 
 # Show usage instructions when no start url is given
 unless scope
-    usage_instructions unless silent
+    usage_instructions unless output == 'silent'
     exit 1
 end
-
-# --silent and --debug cannot be combined
-exit 1 if (silent && debugMode)
 
 # Fail when unknown options are encountered
 unknown_options = args.unknown_options
 if unknown_options.count > 0
-    unknown_options.each { |o| puts "Error: unknown option #{o}" } unless silent
+    unknown_options.each { |o| puts "Error: unknown option #{o}" } unless output == 'silent'
     exit 1
 end
 
-# Flag used to determine whether we want to show a spinner, formatted table, etc.
-fancyUI = !silent && !debugMode
-
 # Show spinner
-if fancyUI
+if output == 'human'
     spinner = TTY::Spinner.new "[:spinner] :operation"
     spinner.update operation: 'Initializing'
     spinner.auto_spin
 end
 
 # Initialize debug output
-$d = Debugger.new debugMode
+$d = Debugger.new(output == 'debug')
 
 # Output variable scoped to program
 results = Results.new
@@ -89,13 +89,13 @@ if args.hasAny? '--folder'
 
     # Sanity checks: folder exists, is writeable
     if !File.writable?(directory)
-        puts "Error: the selected output folder (--folder) does not exist, or is not writeable" unless silent
+        puts "Error: the selected output folder (--folder) does not exist, or is not writeable" unless output == 'silent'
         exit 4
     end
 
     # Sanity check: folder is initially empty
     if !Dir["#{directory}/*"].empty?
-        puts "Error: the selected output folder (--folder) is not empty" unless silent
+        puts "Error: the selected output folder (--folder) is not empty" unless output == 'silent'
         exit 5
     end
 else
@@ -106,7 +106,7 @@ end
 # Main process
 begin
     $d.debug "Using directory #{directory}"
-    spinner.update operation: 'Downloading all pages of the website' if fancyUI
+    spinner.update operation: 'Downloading all pages of the website' if output == 'human'
 
     # Setup authentication if required
     auth = ""
@@ -120,12 +120,12 @@ begin
     `#{wget}`
 
     # Check the wget log for errors
-    spinner.update operation: 'Analyzing download log file' if fancyUI
+    spinner.update operation: 'Analyzing download log file' if output == 'human'
     logFile = "#{directory}/wget.log"
     analyzer = LogAnalyzer.new logFile, results
     analyzer.analyze
 
-    spinner.update operation: 'Checking for problems in downloaded pages' if fancyUI
+    spinner.update operation: 'Checking for problems in downloaded pages' if output == 'human'
     lookup = UrlLookup.new(File.open(directory+'/wget.log').read)
 
     # Iterate over all downloaded files
@@ -137,11 +137,11 @@ begin
         url = lookup.original_url_for path
 
         # Feed it to each checker
-        output = results.addPage url
+        page_results = results.addPage url
         checks.each do |checker|
-            output.concat(checker.check(contents))
+            page_results.concat(checker.check(contents))
         end
-        $d.debug "#{output.flatten(1).count} errors/warnings"
+        $d.debug "#{page_results.count} errors/warnings"
     end
 ensure
     # Clean up the temp directory
@@ -156,7 +156,7 @@ results.removeErrors! if !showErrors && showWarnings
 results.removeWarnings! if showErrors && !showWarnings
 
 # Format results
-if fancyUI
+if output == 'human'
     spinner.update(operation: 'All done')
     spinner.success
     spinner.update operation: 'Filtering results'
