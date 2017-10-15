@@ -37,8 +37,9 @@ and `brew install wget`.
 awacs [url] [options]
 ```
 
-`url` should be the base URL of the website you're going to test, e.g. [http://www.website.com](http://www.website.com). This URL acts as a scope. For
-example, if you use [http://www.website.com/planning/](http://www.website.com/planning/) as the base URL
+`url` should be the base URL of the website you're going to test, e.g. [http://www.website.com](http://www.website.com). You must specify the full URL, including the protocol (http://, https://). Also note that if your website is configured to redirect to all traffic to www.website.com, or website.com, you *must* use the correct form in the scope, or you'll get zero results.
+
+This URL acts as a scope: AWACS uses it to determine whether a page is on your website, or not. You could also use it to check only a subset of the website. For example, if you use [http://www.website.com/planning/](http://www.website.com/planning/) as the base URL
 [http://www.website.com/planning/phase-one](http://www.website.com/planning/phase-one) would be included, but
 [http://www.website.com/about-us](http://www.website.com/about-us) and [http://instagram.com](http://instagram.com) won't
 be included.
