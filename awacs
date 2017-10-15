@@ -17,9 +17,9 @@ require_relative 'src/checks/PrintsLorem'
 require_relative 'src/checks/URLTester'
 require_relative 'src/IO/Arguments'
 require_relative 'src/IO/Debugger'
-require_relative 'src/IO/Formatter'
 require_relative 'src/IO/UrlLookup'
 require_relative 'src/IO/usage_instructions'
+require_relative 'src/IO/exporters/Table'
 
 # Parse command line arguments
 args = Arguments.new(ARGV)
@@ -139,7 +139,7 @@ begin
         # Feed it to each checker
         output = results.addPage url
         checks.each do |checker|
-            output << checker.check(contents)
+            output.concat(checker.check(contents))
         end
         $d.debug "#{output.flatten(1).count} errors/warnings"
     end
@@ -148,14 +148,21 @@ ensure
     FileUtils.remove_entry(directory) if clean_up_directory
 end
 
+# Filter results if --errors or --warnings was given
+showErrors = args.hasAny? '-e', '--errors'
+showWarnings = args.hasAny? '-w', '--warnings'
+results.removeSuccesses! if showErrors || showWarnings
+results.removeErrors! if !showErrors && showWarnings
+results.removeWarnings! if showErrors && !showWarnings
+
 # Format results
 if fancyUI
     spinner.update(operation: 'All done')
     spinner.success
     spinner.update operation: 'Filtering results'
 
-    formatter = Formatter.new results, args.hasAny?('--errors', '-e'), args.hasAny?('--warnings', '-w')
-    puts formatter.render
+    table = Table.new results
+    puts table.render
 end
 
 # Exit with proper return code
