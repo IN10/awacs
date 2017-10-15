@@ -44,7 +44,7 @@ class URLTester
             request.basic_auth @username, @password if @username || @password
             response = http.request(request)
 
-            # Follow redirects if needed
+            # Follow a single redirect if needed
             if response.is_a? Net::HTTPRedirection
                 redirect = response['location']
 
