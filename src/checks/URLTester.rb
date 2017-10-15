@@ -1,3 +1,5 @@
+require 'net/http'
+
 # Call a URL to verify its status code
 # includes caching
 class URLTester
@@ -16,21 +18,42 @@ class URLTester
 
     private
 
+    # Fetch a URI and store the result in the cache
     def fetchStatus uri
-        options = {read_timeout: 2}
-        options[:http_basic_authentication] = [@username, @password] if @username || @password
-
-        # Get the page
         begin
-            open(uri, options) { |response| @cache[uri] = response.status[0] }
+            response = request(uri)
+            @cache[uri] = response.code
         rescue OpenURI::HTTPError => error
             @cache[uri] = error.io.status[0]
         rescue Net::ReadTimeout
             @cache[uri] = 'read_timeout'
         rescue SocketError
             @cache[uri] = 'socket_error'
-        rescue
-            @cache[uri] = 'unknown'
+            # rescue
+            #     @cache[uri] = 'unknown'
+        end
+    end
+
+    # GET a URI, handling redirection, HTTPS, etc.
+    def request(uri)
+        Net::HTTP.start(uri.host, uri.port) do |http|
+            http.read_timeout = 2 # Use a low timeout for speedy testing
+
+            # Do the request
+            request  = Net::HTTP::Get.new uri
+            request.basic_auth @username, @password if @username || @password
+            response = http.request(request)
+
+            # Follow redirects if needed
+            if response.is_a? Net::HTTPRedirection
+                redirect = response['location']
+
+                request  = Net::HTTP::Get.new redirect
+                request.basic_auth @username, @password if @username || @password
+                response = http.request(request)
+            end
+
+            return response
         end
     end
 end
