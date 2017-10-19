@@ -29,8 +29,8 @@ class URLTester
             @cache[uri] = 'read_timeout'
         rescue SocketError
             @cache[uri] = 'socket_error'
-            # rescue
-            #     @cache[uri] = 'unknown'
+        rescue
+            @cache[uri] = 'unknown'
         end
     end
 
