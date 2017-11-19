@@ -2,7 +2,7 @@
 class InvalidHTML < Check
 
     def check page
-        errors = Nokogiri::HTML(page).errors.count
+        errors = Nokogiri::HTML5(page).errors.count
         if errors > 0
             return [{type: Check::WARNING, message: "#{errors} HTML errors"}]
         else

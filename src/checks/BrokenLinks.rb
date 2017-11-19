@@ -1,4 +1,4 @@
-require 'nokogiri'
+require 'nokogumbo'
 require 'open-uri'
 require 'addressable'
 require_relative 'Check.rb'
@@ -18,7 +18,7 @@ class BrokenLinks < Check
     end
 
     def check page
-        html = Nokogiri::HTML page
+        html = Nokogiri::HTML5 page
 
         urls = html.xpath('//a[@href]').map { |a| a.attr :href }
         urls.reject! { |u| u.start_with?('tel:') || u.start_with?('mailto:') || u.start_with?('#') }

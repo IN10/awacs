@@ -1,4 +1,4 @@
-require 'nokogiri'
+require 'nokogumbo'
 require 'open-uri'
 require 'addressable'
 require_relative 'Check.rb'
@@ -14,7 +14,7 @@ class BrokenScripts < Check
     end
 
     def check page
-        html = Nokogiri::HTML page
+        html = Nokogiri::HTML5 page
         results = []
 
         urls = html.xpath('//script[@src]').map { |l| l.attr :src }
