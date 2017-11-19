@@ -1,20 +1,20 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    addressable (2.5.1)
-      public_suffix (~> 2.0, >= 2.0.2)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
     equatable (0.5.0)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.3.0)
     necromancer (0.4.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
-    pastel (0.7.1)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
+    pastel (0.7.2)
       equatable (~> 0.5.0)
       tty-color (~> 0.4.0)
-    public_suffix (2.0.5)
+    public_suffix (3.0.1)
     tty-color (0.4.2)
     tty-cursor (0.5.0)
-    tty-screen (0.5.0)
+    tty-screen (0.5.1)
     tty-spinner (0.5.0)
       tty-cursor (>= 0.5.0)
     tty-table (0.8.0)
@@ -41,4 +41,4 @@ DEPENDENCIES
   tty-table (~> 0.8.0)
 
 BUNDLED WITH
-   1.15.1
+   1.16.0
