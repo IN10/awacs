@@ -7,18 +7,17 @@ doesn't provide a complete overview, but detects signals that you may want to
 investigate further.
 
 ## Contents
-- [AWACS](#awacs)
-  * [Contents](#contents)
-  * [Installation](#installation)
-  * [Usage](#usage)
-    + [Output formats](#output-formats)
-    + [Filtering results](#filtering-results)
-    + [Exit codes](#exit-codes)
-  * [Checks](#checks)
-  * [Known problems](#known-problems)
-  * [Technology](#technology)
-  * [Development](#development)
-  * [License](#license)
+- [Contents](#contents)
+- [Installation](#installation)
+- [Usage](#usage)
+  * [Output formats](#output-formats)
+  * [Filtering results](#filtering-results)
+  * [Exit codes](#exit-codes)
+- [Checks](#checks)
+- [Known problems](#known-problems)
+- [Technology](#technology)
+- [Development](#development)
+- [License](#license)
 
 ## Installation
 This tool is a Ruby-application that you run from the command-line. You can
