@@ -21,7 +21,7 @@ class BrokenLinks < Check
         html = Nokogiri::HTML5 page
 
         urls = html.xpath('//a[@href]').map { |a| a.attr :href }
-        urls.reject! { |u| u.start_with?('tel:') || u.start_with?('mailto:') || u.start_with?('#') }
+        urls = skip_untestable_protocols(urls)
         urls.map! { |u| Addressable::URI.join(@arguments.scope, u).normalize }
 
         results = []
@@ -38,5 +38,14 @@ class BrokenLinks < Check
             end
         end
         results
+    end
+
+    private
+
+    def skip_untestable_protocols urls
+        ['tel:', 'mailto:', '#', 'whatsapp:'].each do |protocol|
+            urls = urls.select { |url| !url.start_with? protocol }
+        end
+        urls
     end
 end
