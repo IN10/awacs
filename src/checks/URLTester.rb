@@ -37,7 +37,7 @@ class URLTester
     # GET a URI, handling redirection, HTTPS, etc.
     def request(uri)
         Net::HTTP.start(uri.host, uri.port) do |http|
-            http.read_timeout = 2 # Use a low timeout for speedy testing
+            http.read_timeout = 3 # Use a low timeout for speedy testing
 
             # Do the request
             request  = Net::HTTP::Get.new uri
