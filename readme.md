@@ -101,6 +101,7 @@ The program returns an appropriate exit code based on its results:
 |    4 | Selected folder (--folder) does not exist, or is not writeable |
 |    5 | Selected folder (--folder) is not empty |
 |    6 | Downloading the website using wget failed (wget returned a non-zero exit code) |
+|    7 | wget could not be found (in PATH). wget is required for awacs to operate |
 
 ## Checks
 awacs executes the following tests on every run. Slow tests are skipped when awacs

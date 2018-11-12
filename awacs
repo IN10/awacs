@@ -58,7 +58,10 @@ if unknown_options.count > 0
 end
 
 # Check that wget is installed
-
+unless system('command -v wget > /dev/null')
+    puts "Error: awacs requires wget to be installed (and in PATH)" unless output == 'silent'
+    exit 7
+end
 
 # Show spinner
 if output == 'human'
