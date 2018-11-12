@@ -57,6 +57,9 @@ if unknown_options.count > 0
     exit 1
 end
 
+# Check that wget is installed
+
+
 # Show spinner
 if output == 'human'
     spinner = TTY::Spinner.new "[:spinner] :operation"
@@ -118,7 +121,13 @@ begin
     # Download the website with wget
     wget = "(cd #{directory}; wget -r -np -nd -nv --follow-tags=a --random-wait -erobots=off -nc -o wget.log #{auth} #{scope})"
     $d.debug "Downloading pages using wget: #{wget}"
-    `#{wget}`
+    success = system(wget)
+
+    # Check if wget succeeded, bail otherwise
+    if !success
+        puts "Error: downloading the website using wget returned a non-zero exit code" unless output == 'silent'
+        exit 6
+    end
 
     # Check the wget log for errors
     spinner.update operation: 'Analyzing download log file' if output == 'human'
