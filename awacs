@@ -126,12 +126,6 @@ begin
     $d.debug "Downloading pages using wget: #{wget}"
     success = system(wget)
 
-    # Check if wget succeeded, bail otherwise
-    if !success
-        puts "Error: downloading the website using wget returned a non-zero exit code" unless output == 'silent'
-        exit 6
-    end
-
     # Check the wget log for errors
     spinner.update operation: 'Analyzing download log file' if output == 'human'
     logFile = "#{directory}/wget.log"
