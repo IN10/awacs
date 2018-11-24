@@ -35,6 +35,11 @@ and `brew install wget`.
 1. Install the dependencies by running `bundle install`.
 1. Verify your installation by running `awacs -v` or `awacs -h`.
 
+### Bundle problems
+In some cases, ruby might not find your gems to run awacs on the command line.
+You can run awacs in the context of your bundle by running
+`bundle exec awacs https://in10.nl` or configure bundler binstubs.
+
 ## Usage
 ```bash
 awacs [url] [options]
@@ -94,6 +99,8 @@ The program returns an appropriate exit code based on its results:
 |    3 | Website triggered warnings |
 |    4 | Selected folder (--folder) does not exist, or is not writeable |
 |    5 | Selected folder (--folder) is not empty |
+|    6 | Downloading the website using wget failed (wget returned a non-zero exit code) |
+|    7 | wget could not be found (in PATH). wget is required for awacs to operate |
 
 ## Checks
 awacs executes the following tests on every run. Slow tests are skipped when awacs
